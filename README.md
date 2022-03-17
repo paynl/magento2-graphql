@@ -35,7 +35,7 @@ In command line, navigate to the installation directory of Magento2
 Enter the following commands:
 
 ```
-composer require paynl/magento2-plugin
+composer require paynl/magento2-graphql-module
 php bin/magento setup:upgrade
 php bin/magento cache:clean
 ```
