@@ -65,16 +65,19 @@ This mutation expects the `pay_order_id`. It will return [#PaynlTransactionOutpu
 ## paynlRefundTransaction
 
 The paynlRefundTransaction mutation refunds the order. <br/>
+This mutation requires an INTEGRATION or ADMIN Authorization token to be used. <br/>
 This mutation expects the `pay_order_id` and the `amount`. It will return [#PaynlResultOutput](#paynlresultoutput)
 
 ## paynlCaptureTransaction
 
 The paynlCaptureTransaction captures the order.<br/>
+This mutation requires an INTEGRATION or ADMIN Authorization token to be used. <br/>
 This mutation expects the `pay_order_id` and optionally the `amount`. It will return [#PaynlResultOutput](#paynlresultoutput)
 
 ## paynlVoidTransaction
 
 The paynlVoidTransaction mutation voids the order.<br/>
+This mutation requires an INTEGRATION or ADMIN Authorization token to be used. <br/>
 This mutation expects the `pay_order_id`. It will return [#PaynlResultOutput](#paynlresultoutput)
 
 ## paynlPayLink
