@@ -1,7 +1,7 @@
 <p align="center">
     <img src="https://www.pay.nl/uploads/1/brands/main_logo.png" />
 </p>
-<h1 align="center">PAY. Magento2 Graphql Module</h1>
+<h1 align="center">PAY. GraphQL Extension for Magento 2</h1>
   
 # Description
 
