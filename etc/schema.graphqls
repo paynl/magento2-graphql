@@ -8,24 +8,53 @@ type Query {
 type Mutation {
 
     paynlStartTransaction (
-            order_id: String! @doc(description: "the Order Id of the magento2 order, not to be confused with order number")
-            return_url: String! @doc(description: "Url to send the customer to once the payment has finished.")
+            order_id: String! @doc(description: "Order Id")
+            return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
     ) : PaynlStartTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\StartTransaction") @doc(description: "Initialize the transaction.")
 
     paynlFinishTransaction (
-            pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento. Executing this mutation closes the Magento2 quote if the transaction is marked as successfull")
-    ) : PaynlTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\FinishTransaction") @doc(description: "Initialize the transaction.")
+            pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento.")
+    ) : PaynlTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\FinishTransaction") @doc(description: "Initialize the finish.")
+
+    paynlRefundTransaction (
+            pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
+            amount: String! @doc(description: "The amount you wish to refund.")
+    ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\RefundTransaction") @doc(description: "Initialize the refund.")
+
+    paynlCaptureTransaction (
+            pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
+            amount: String @doc(description: "The amount you wish to capture.")
+    ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\CaptureTransaction") @doc(description: "Initialize the capture.")
+
+    paynlVoidTransaction (
+            pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
+    ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\VoidTransaction") @doc(description: "Initialize the void.")
+
+    paynlPayLink (
+            order_id: String! @doc(description: "Order Id")
+            return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
+    ) : PaynlPayLinkOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\PayLink") @doc(description: "Initialize the paylink transaction.")
+
 }
 
 type PaynlStartTransactionOutput {
-    redirectUrl  : String  @doc(description: "The url to redirect to the pay checkout")
+    redirectUrl  : String  @doc(description: "The url to redirect to the PAY. checkout")
+}
+
+type PaynlPayLinkOutput {
+    paylink  : String  @doc(description: "The url to redirect to the PAY. paylink")
+}
+
+type PaynlResultOutput {
+    result   : Boolean @doc(description: "The result of the action")
+    message  : String  @doc(description: "The message output from PAY.")
 }
 
 type PaynlTransactionOutput {
-    orderId  : String!  @doc(description: "The Pay order id")
+    orderId  : String  @doc(description: "The PAY. order id")
     state  : Int  @doc(description: "The State number")
     stateName  : String  @doc(description: "The State name")
-    currency  : String  @doc(description: "The currency used to pay")
+    currency  : String  @doc(description: "The currency used to PAY.")
     amount  : String  @doc(description: "The amount in cents")
     currenyAmount  : String  @doc(description: "The amount in cents in the curency")
     paidAmount  : String  @doc(description: "The paid amount in cents")

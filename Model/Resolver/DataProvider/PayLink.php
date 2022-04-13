@@ -8,7 +8,7 @@ use Magento\Payment\Helper\Data as PaymentHelper;
 use Magento\Quote\Model\QuoteRepository;
 use Magento\Sales\Model\OrderRepository;
 
-class StartTransaction
+class PayLink
 {
     public function __construct(
         QuoteRepository $quoteRepository,
@@ -20,9 +20,9 @@ class StartTransaction
         $this->orderRepository = $orderRepository;
     }
 
-    public function startTransaction($options)
+    public function getPayLink($options)
     {
-        $redirectUrl = '';
+        $paylink = '';
 
         $order = $this->orderRepository->get($options['order_id']);
         $quote = $this->quoteRepository->get($order->getQuoteId());
@@ -34,11 +34,17 @@ class StartTransaction
             $payment->setAdditionalInformation('returnUrl', $options['return_url']);
         }
 
-        $methodInstance = $this->paymentHelper->getMethodInstance($payment->getMethod());
-        if ($methodInstance instanceof \Paynl\Payment\Model\Paymentmethod\Paymentmethod) {
-            $redirectUrl = $methodInstance->startTransaction($order);
+        if ($payment->getMethod() != 'paynl_payment_paylink') {
+            $payment->setMethod('paynl_payment_paylink');
+            $payment->save();
+            $order->save();
         }
 
-        return ['redirectUrl' => $redirectUrl];
+        $methodInstance = $this->paymentHelper->getMethodInstance($payment->getMethod());
+        if ($methodInstance instanceof \Paynl\Payment\Model\Paymentmethod\Paymentmethod) {
+            $paylink = $methodInstance->startTransaction($order);
+        }
+
+        return ['paylink' => $paylink];
     }
 }

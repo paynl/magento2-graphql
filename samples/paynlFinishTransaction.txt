@@ -1,0 +1,21 @@
+QUERY:
+mutation paynlFinishTransaction($pay_order_id: String!) {
+    paynlFinishTransaction(pay_order_id: $pay_order_id) {
+        orderId
+        state  
+        stateName  
+        currency  
+        amount  
+        currenyAmount 
+        paidAmount  
+        paidCurrenyAmount
+        refundAmount 
+        refundCurrenyAmount
+        created
+        orderNumber
+        isSuccess
+    }
+}
+
+GRAPHQL VARIABLES:
+{"pay_order_id":"1234567890"}

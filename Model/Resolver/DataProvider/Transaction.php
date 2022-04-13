@@ -34,8 +34,7 @@ class Transaction
     {
         $transaction = $this->getTransaction($payOrderId);
         $data = array_intersect_key($transaction->getData()['paymentDetails'], array_flip($this->whitelist));
-        $data['isSuccess'] = ($transaction->isPaid() || $transaction->isAuthorized() || $transaction->isPending());
-
+        $data['isSuccess'] = ($transaction->isPaid() || $transaction->isAuthorized() || $transaction->isPending());        
         return $data;
     }
 

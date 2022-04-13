@@ -1,0 +1,18 @@
+QUERY:
+mutation paynlVoidTransaction($pay_order_id: String!) {
+    paynlVoidTransaction(pay_order_id: $pay_order_id) {
+        result,
+        message
+    }
+}
+
+GRAPHQL VARIABLES:
+{"pay_order_id":"1234567890abcdefg"}
+
+NOTES:
+This mutation requires an INTEGRATION or ADMIN Authorization token to be used. 
+You can create a Authorization token by making a POST to the following REST url:
+http://mymagento.com/rest/all/V1/integration/admin/token?username=MyName&password=MyPassword
+
+Send the token as header:
+[{"key":"Authorization","value":"Bearer yourtokenhere"}]

@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Paynl\Graphql\Model\Resolver;
 
-use Magento\Framework\Exception\NoSuchEntityException;
+use Exception;
 use Magento\Framework\GraphQl\Config\Element\Field;
-use Magento\Framework\GraphQl\Exception\GraphQlInputException;
-use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
+
 class Transaction implements ResolverInterface
 {
-
     private $transactionDataProvider;
 
     /**
@@ -38,4 +36,3 @@ class Transaction implements ResolverInterface
         return $this->transactionDataProvider->getTransactionData($args['pay_order_id']);
     }
 }
-

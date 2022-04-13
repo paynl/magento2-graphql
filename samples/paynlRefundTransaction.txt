@@ -1,0 +1,18 @@
+QUERY:
+mutation paynlRefundTransaction($pay_order_id: String!, $amount: String!) {
+    paynlRefundTransaction(pay_order_id: $pay_order_id, amount: $amount) {
+        result,
+        message
+    }
+}
+
+GRAPHQL VARIABLES:
+{"pay_order_id":"1234567890abcdefg", "amount":"1.23"}
+
+NOTES:
+This mutation requires an INTEGRATION or ADMIN Authorization token to be used. 
+You can create a Authorization token by making a POST to the following REST url:
+http://mymagento.com/rest/all/V1/integration/admin/token?username=MyName&password=MyPassword
+
+Send the token as header:
+[{"key":"Authorization","value":"Bearer yourtokenhere"}]
