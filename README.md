@@ -40,15 +40,19 @@ php bin/magento setup:upgrade
 php bin/magento cache:clean
 ```
 
-The plugin is now installed
+The plugin is now installed and ready for use.
+
+# Usage
+To see how to use the queries, please check the samples folder. 
+This library consits of queries, mutations and some othere, see:
 
 
 # Queries
 
 ## paynlTransaction
 
-Get the PAY. transaction status based on the PAY order_id which can be found in the PAY. backend.<br/>
-This query expects `pay_order_id` as an argument. It will return [#PaynlTransactionOutput](#paynltransactionoutput)
+Get the PAY. transaction status based on the PAY order-ID which can be found in the PAY. backend.<br/>
+This query expects `pay_order_id` as an argument and returns a [#PaynlTransactionOutput](#paynltransactionoutput)
 
 # Mutations
 
@@ -87,11 +91,6 @@ This mutation expects the `pay_order_id`. It will return [#PaynlTransactionOutpu
 | Variable    | Type   | Description                              |
 | ----------- | ------ | ---------------------------------------- |
 | redirectUrl | String | The url to redirect to the pay checkout. |
-
-
-# Usage
-
-To see how to use the queries, please check the samples folder. 
 
 # Support
 https://www.pay.nl
