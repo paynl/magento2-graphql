@@ -36,29 +36,30 @@ php bin/magento cache:clean
 The plugin is now installed and ready for use.
 
 # Usage and Examples
-To see how to use the queries, please check the samples folder. <br/>
-This graphql library consist of queries, mutations and some classes.
+To see how to use the queries, please check the [samples folder](/samples). <br/>
+
+So, this GraphQL library consist of queries, mutations and some other classes.
 They are explained below.
 
 # Queries
 
-## * paynlTransaction
+- **paynlTransaction**<br/>
 Retrieve a PAY. transaction status based on the PAY order-ID.<br/>
 This query expects `pay_order_id` as an argument and returns a [#PaynlTransactionOutput](#paynltransactionoutput)
 
 # Mutations
 
-## paynlStartTransaction
+- **paynlStartTransaction**</br>
 Start a transaction based on the Magento2 order-ID. This will return a URL with the PAY. transaction.<br/>
 This mutation expects `order_id` and optionally `return_url`. It will return [#PaynlStartTransactionOutput](#paynlstarttransactionoutput)
 
-## paynlFinishTransaction
+- **paynlFinishTransaction**</br>
 This mutation closes the Magento quote, if the transaction is marked as successfull and returns the PAY. transaction status. <br/>
 As argument it expects the `pay_order_id` and returns a [#PaynlTransactionOutput](#paynltransactionoutput)
 
 # Types
 
-## PaynlTransactionOutput
+- **PaynlTransactionOutput**
 
 | Variable            | Type    | Description                                   |
 | ------------------- | ------- | --------------------------------------------- |
@@ -76,7 +77,7 @@ As argument it expects the `pay_order_id` and returns a [#PaynlTransactionOutput
 | orderNumber         | String  | The Order increment id for the Magento order. |
 | isSuccess           | Boolean | Was the payment successfull.                  |
 
-## PaynlStartTransactionOutput
+- **PaynlStartTransactionOutput**
 
 | Variable    | Type   | Description                              |
 | ----------- | ------ | ---------------------------------------- |
