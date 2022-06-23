@@ -10,13 +10,10 @@ use Magento\Sales\Model\OrderRepository;
 
 class StartTransaction
 {
-    public function __construct(
-        QuoteRepository $quoteRepository,
-        OrderRepository $orderRepository,
-        PaymentHelper $paymentHelper
-    ) {
+    public function __construct(QuoteRepository $quoteRepository, OrderRepository $orderRepository, PaymentHelper $paymentHelper)
+    {
         $this->quoteRepository = $quoteRepository;
-        $this->paymentHelper   = $paymentHelper;
+        $this->paymentHelper = $paymentHelper;
         $this->orderRepository = $orderRepository;
     }
 

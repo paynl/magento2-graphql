@@ -9,25 +9,12 @@ use \Exception;
 
 class Transaction
 {
-    public $whitelist = [
-        'orderId',
-        'state',
-        'stateName',
-        'currency',
-        'amount',
-        'currenyAmount',
-        'paidAmount',
-        'paidCurrenyAmount',
-        'refundAmount',
-        'refundCurrenyAmount',
-        'created',
-        'orderNumber',
-    ];
+    public $whitelist = ['orderId', 'state', 'stateName', 'currency', 'amount', 'currenyAmount', 'paidAmount',
+                         'paidCurrenyAmount', 'refundAmount', 'refundCurrenyAmount', 'created', 'orderNumber'];
 
-    public function __construct(
-        Config $config
-    ) {
-        $this->config   = $config;
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
     }
 
     public function getTransactionData($payOrderId)
@@ -42,7 +29,6 @@ class Transaction
     public function getTransaction($payOrderId)
     {
         \Paynl\Config::setApiToken($this->config->getApiToken());
-
         return \Paynl\Transaction::status($payOrderId);
     }
 }
