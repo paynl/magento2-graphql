@@ -16,3 +16,41 @@ http://mymagento.com/rest/all/V1/integration/admin/token?username=MyName&passwor
 
 Send the token as header:
 [{"key":"Authorization","value":"Bearer yourtokenhere"}]
+
+
+PHP SAMPLE:
+<?php
+
+$url = "http://mymagento.com/graphql";
+
+$headers = array();
+$headers[] = 'Content-Type: application/json';
+$headers[] = 'Authorization: Bearer yourtokenhere';
+
+$query = <<<Query
+mutation paynlCaptureTransaction(\$pay_order_id: String!, \$amount: String) {
+    paynlCaptureTransaction(pay_order_id: \$pay_order_id, amount: \$amount) {
+        result,
+        message
+    }
+}
+Query;
+$variables = ["pay_order_id" => "1234567890abcdefg", "amount" => "1.23"];
+
+$data = json_encode(['query' => $query, 'variables' => $variables]);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 0);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+$result = curl_exec($ch);
+var_dump($result);
+
+?>
+
+
+
+
