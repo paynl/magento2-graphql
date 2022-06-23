@@ -20,13 +20,14 @@ class StartTransaction
     public function startTransaction($options)
     {
         $redirectUrl = '';
-        $order = $this->orderRepository->get($options['order_id']);
+
+        $order = $this->orderRepository->get($options['magento_order_id']);
         $quote = $this->quoteRepository->get($order->getQuoteId());
         $quote->setIsActive(true);
         $this->quoteRepository->save($quote);
 
         $payment = $order->getPayment();
-        if ($options['return_url']) {
+        if (!empty($options['return_url'])) {
             $payment->setAdditionalInformation('returnUrl', $options['return_url']);
         }
 

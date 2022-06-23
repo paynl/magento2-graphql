@@ -8,8 +8,8 @@ type Query {
 type Mutation {
 
     paynlStartTransaction (
-            order_id: String! @doc(description: "the Order Id of the magento2 order, not to be confused with order number")
-            return_url: String! @doc(description: "Url to send the customer to once the payment has finished.")
+            magento_order_id: String! @doc(description: "The Order Id of the magento2 order, not to be confused with order number")
+            return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
     ) : PaynlStartTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\StartTransaction") @doc(description: "Initialize the transaction.")
 
     paynlFinishTransaction (
