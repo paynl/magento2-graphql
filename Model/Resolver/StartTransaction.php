@@ -19,22 +19,16 @@ class StartTransaction implements ResolverInterface
     /**
      * @param DataProvider\StartTransaction $startTransactionRepository
      */
-    public function __construct(
-        DataProvider\StartTransaction $startTransactionDataProvider
-    ) {
+    public function __construct(DataProvider\StartTransaction $startTransactionDataProvider)
+    {
         $this->startTransactionDataProvider = $startTransactionDataProvider;
     }
 
     /**
      * @inheritdoc
      */
-    public function resolve(
-        Field $field,
-        $context,
-        ResolveInfo $info,
-        array $value = null,
-        array $args = null
-    ) {
+    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    {
         return $this->startTransactionDataProvider->startTransaction($args);
     }
 }

@@ -19,22 +19,16 @@ class Transaction implements ResolverInterface
     /**
      * @param DataProvider\StartTransaction $startTransactionRepository
      */
-    public function __construct(
-        DataProvider\Transaction $transactionDataProvider
-    ) {
+    public function __construct(DataProvider\Transaction $transactionDataProvider)
+    {
         $this->transactionDataProvider = $transactionDataProvider;
     }
 
     /**
      * @inheritdoc
      */
-    public function resolve(
-        Field $field,
-        $context,
-        ResolveInfo $info,
-        array $value = null,
-        array $args = null
-    ) {
+    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    {
         return $this->transactionDataProvider->getTransactionData($args['pay_order_id']);
     }
 }
