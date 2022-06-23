@@ -38,7 +38,7 @@ The plugin is now installed and ready for use.
 # Usage and Examples
 To see how to use the queries, please check the [samples folder](/samples). <br/>
 
-So, this GraphQL library consist of queries, mutations and some other classes.
+This GraphQL library consists of queries, mutations and some other classes.
 They are explained below.
 
 # Queries
