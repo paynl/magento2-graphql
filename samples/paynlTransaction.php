@@ -1,27 +1,3 @@
-QUERY:
-mutation paynlFinishTransaction($pay_order_id: String!) {
-    paynlFinishTransaction(pay_order_id: $pay_order_id) {
-        orderId
-        state  
-        stateName  
-        currency  
-        amount  
-        currenyAmount 
-        paidAmount  
-        paidCurrenyAmount
-        refundAmount 
-        refundCurrenyAmount
-        created
-        orderNumber
-        isSuccess
-    }
-}
-
-GRAPHQL VARIABLES:
-{"pay_order_id":"1234567890abcdefg"}
-
-
-PHP SAMPLE:
 <?php
 
 $url = "http://mymagento.com/graphql";
@@ -30,8 +6,8 @@ $headers = array();
 $headers[] = 'Content-Type: application/json';
 
 $query = <<<Query
-mutation paynlFinishTransaction(\$pay_order_id: String!) {
-    paynlFinishTransaction(pay_order_id: \$pay_order_id) {
+query paynlTransaction(\$pay_order_id: String!) {
+    paynlTransaction(pay_order_id: \$pay_order_id) {
         orderId
         state  
         stateName  
@@ -61,5 +37,3 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
 $result = curl_exec($ch);
 var_dump($result);
-
-?>
