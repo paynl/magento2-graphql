@@ -36,4 +36,7 @@ curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
 $result = curl_exec($ch);
-var_dump($result);
+
+if ($result !== false) {
+    print_r(json_decode($result, true));
+}
