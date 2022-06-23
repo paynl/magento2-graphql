@@ -81,7 +81,7 @@ As argument it expects the `pay_order_id` and returns type [#PaynlTransactionOut
 
 | Variable    | Type   | Description                              |
 | ----------- | ------ | ---------------------------------------- |
-| redirectUrl | String | The url to redirect to the pay checkout. |
+| redirectUrl | String | The URL to redirect to the pay checkout. |
 
 # Support
 https://www.pay.nl
