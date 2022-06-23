@@ -63,25 +63,25 @@ As argument it expects the `pay_order_id` and returns type [#PaynlTransactionOut
 
 | Variable            | Type    | Description                                   |
 | ------------------- | ------- | --------------------------------------------- |
-| orderId             | String  | The PAY. order id.                            |
-| state               | Int     | The State number.                             |
-| stateName           | String  | The State name.                               |
-| currency            | String  | The currency used to pay.                     |
+| orderId             | String  | The PAY. order-ID.                            |
+| state               | Int     | The state number.                             |
+| stateName           | String  | The state name.                               |
+| currency            | String  | The currency used in the payment              |
 | amount              | String  | The amount in cents.                          |
-| currenyAmount       | String  | The amount in cents in the curency.           |
+| currenyAmount       | String  | The amount in cents in the currency.          |
 | paidAmount          | String  | The paid amount in cents.                     |
-| paidCurrenyAmount   | String  | The paid amount in cents in the curency.      |
+| paidCurrenyAmount   | String  | The paid amount in cents in the currency.     |
 | refundAmount        | String  | The refunded amount in cents.                 |
-| refundCurrenyAmount | String  | The refunded amount in cents in the curency.  |
-| created             | String  | Created at date.                              |
-| orderNumber         | String  | The Order increment id for the Magento order. |
-| isSuccess           | Boolean | Was the payment successfull.                  |
+| refundCurrenyAmount | String  | The refunded amount in cents in the currency. |
+| created             | String  | Date of creation.                             |
+| orderNumber         | String  | The oder increment ID for the Magento order.  |
+| isSuccess           | Boolean | True when in case of a successfull payment    |
 
 - **PaynlStartTransactionOutput**
 
 | Variable    | Type   | Description                              |
 | ----------- | ------ | ---------------------------------------- |
-| redirectUrl | String | The URL to redirect to the pay checkout. |
+| redirectUrl | String | The URL to redirect to the PAY. checkout.|
 
 # Support
 https://www.pay.nl
