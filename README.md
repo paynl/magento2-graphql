@@ -51,11 +51,11 @@ This query expects `pay_order_id` as an argument and returns a [#PaynlTransactio
 
 - **paynlStartTransaction**</br>
 Start a transaction based on the Magento2 order-ID. This will return a URL with the PAY. transaction.<br/>
-This mutation expects `order_id` and optionally `return_url`. It will return [#PaynlStartTransactionOutput](#paynlstarttransactionoutput)
+This mutation expects `order_id` and optionally `return_url`. It will return type [#PaynlStartTransactionOutput](#paynlstarttransactionoutput)
 
 - **paynlFinishTransaction**</br>
-This mutation closes the Magento quote, if the transaction is marked as successfull and returns the PAY. transaction status. <br/>
-As argument it expects the `pay_order_id` and returns a [#PaynlTransactionOutput](#paynltransactionoutput)
+This mutation closes the Magento quote when the transaction is marked as successfull and also returns the PAY. transaction info. <br/>
+As argument it expects the `pay_order_id` and returns type [#PaynlTransactionOutput](#paynltransactionoutput)
 
 # Types
 
