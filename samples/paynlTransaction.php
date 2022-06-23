@@ -1,5 +1,6 @@
 <?php
 
+# Change the following URL to your Magento webshop and extend with '/graphql':
 $url = "http://mymagento.com/graphql";
 
 $headers = array();

@@ -1,5 +1,6 @@
 <?php
 
+# Change the following URL to your Magento webshop and extend with '/graphql':
 $url = "http://mymagento.com/graphql";
 
 $headers = array();
@@ -24,6 +25,7 @@ mutation paynlFinishTransaction(\$pay_order_id: String!) {
     }
 }
 Query;
+
 $variables = ["pay_order_id" => "1234567890abcdefg"];
 
 $data = json_encode(['query' => $query, 'variables' => $variables]);
