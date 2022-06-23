@@ -74,8 +74,8 @@ As argument it expects the `pay_order_id` and returns type [#PaynlTransactionOut
 | refundAmount        | String  | The refunded amount in cents.                 |
 | refundCurrenyAmount | String  | The refunded amount in cents in the currency. |
 | created             | String  | Date of creation.                             |
-| orderNumber         | String  | The oder increment ID for the Magento order.  |
-| isSuccess           | Boolean | True when in case of a successfull payment    |
+| orderNumber         | String  | The order number given by Magento.            |
+| isSuccess           | Boolean | True, in case of a successfull payment.       |
 
 - **PaynlStartTransactionOutput**
 
