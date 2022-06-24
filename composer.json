@@ -3,7 +3,6 @@
     "description": "GraphQL module for 'PAY. Payment methods for Magento2'",
     "type": "magento2-module",
     "version": "1.0.0",
-    "minimum-stability": "dev",
     "require": {
         "paynl/magento2-plugin": ">=2.4.0"
     },
