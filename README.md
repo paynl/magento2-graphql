@@ -5,7 +5,7 @@
   
 # Description
 
-This module adds GraphQL functionality to the [PAY. Magento2 plugin](https://github.com/paynl/magento2-plugin)
+This module adds GraphQL functionality for the [PAY. Magento2 plugin](https://github.com/paynl/magento2-plugin)
 
 - [Description](#description)
 - [Requirements](#requirements)
