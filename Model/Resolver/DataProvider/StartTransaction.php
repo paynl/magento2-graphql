@@ -39,4 +39,3 @@ class StartTransaction
         return ['redirectUrl' => $redirectUrl];
     }
 }
-

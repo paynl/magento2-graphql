@@ -9,8 +9,10 @@ use \Exception;
 
 class Transaction
 {
-    public $whitelist = ['orderId', 'state', 'stateName', 'currency', 'amount', 'currenyAmount', 'paidAmount',
-                         'paidCurrenyAmount', 'refundAmount', 'refundCurrenyAmount', 'created', 'orderNumber'];
+    public $whitelist = [
+        'orderId', 'state', 'stateName', 'currency', 'amount', 'currenyAmount', 'paidAmount',
+        'paidCurrenyAmount', 'refundAmount', 'refundCurrenyAmount', 'created', 'orderNumber'
+    ];
 
     public function __construct(Config $config)
     {
@@ -20,7 +22,16 @@ class Transaction
     public function getTransactionData($payOrderId)
     {
         $transaction = $this->getTransaction($payOrderId);
-        $data = array_intersect_key($transaction->getData()['paymentDetails'], array_flip($this->whitelist));
+        $paymentDetails = $transaction->getData()['paymentDetails'];
+        $data = array_intersect_key($paymentDetails, array_flip($this->whitelist));
+
+        $data['amount'] = array('value' => $paymentDetails['amount'], 'currency' => $paymentDetails['currency']);
+        $data['amountOriginal'] = array('value' => $paymentDetails['currenyAmount'], 'currency' => $paymentDetails['currency']);
+        $data['amountPaid'] = array('value' => $paymentDetails['paidAmount'], 'currency' => $paymentDetails['currency']);
+        $data['amountPaidOriginal'] = array('value' => $paymentDetails['paidCurrenyAmount'], 'currency' => $paymentDetails['currency']);
+        $data['amountRefund'] = array('value' => $paymentDetails['refundAmount'], 'currency' => $paymentDetails['currency']);
+        $data['amountRefundOriginal'] = array('value' => $paymentDetails['refundCurrenyAmount'], 'currency' => $paymentDetails['currency']);
+
         $data['isSuccess'] = ($transaction->isPaid() || $transaction->isAuthorized() || $transaction->isPending());
 
         return $data;
@@ -32,4 +43,3 @@ class Transaction
         return \Paynl\Transaction::status($payOrderId);
     }
 }
-

@@ -12,6 +12,7 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Model\QuoteRepository;
 use Magento\Sales\Api\Data\OrderInterface;
+use Paynl\Graphql\Model\CheckToken;
 
 class FinishTransaction implements ResolverInterface
 {
@@ -32,6 +33,8 @@ class FinishTransaction implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
+        CheckToken::validate($context);
+
         $transactionData = $this->transactionDataProvider->getTransactionData($args['pay_order_id']);
         if (!$transactionData['isSuccess']) {
             return $transactionData;
@@ -46,4 +49,3 @@ class FinishTransaction implements ResolverInterface
         return $transactionData;
     }
 }
-
