@@ -1,6 +1,6 @@
 <?php
 
-define('BASE_URL', "http://mymagento.com/");
+define('BASE_URL', "https://mymagento.com/");
 
 define('ADMIN_USERNAME', "admin");
-define('ADMIN_PASSWORD', "test1234567890");
+define('ADMIN_PASSWORD', "yourPassword");
