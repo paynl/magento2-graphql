@@ -3,7 +3,7 @@
 require_once('config.php');
 require_once('helper.php');
 
-$urlGraphql = BASE_URL . "graphql";
+$urlGraphql = BASE_URL . "/graphql";
 
 $headers = array();
 $headers[] = 'Content-Type: application/json';
