@@ -4,7 +4,7 @@ require_once('config.php');
 require_once('helper.php');
 
 # Change the following URL to your Magento webshop and extend with '/graphql':
-$urlGraphql = BASE_URL . "graphql";
+$urlGraphql = BASE_URL . "/graphql";
 
 $headers = array();
 $headers[] = 'Content-Type: application/json';
