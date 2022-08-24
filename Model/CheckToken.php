@@ -18,7 +18,7 @@ class CheckToken
      */
     public static function validate($context)
     {
-        // Check if token is an integration or admin token
+        # Check if token is an integration or admin token
         if ($context->getUserType() !== self::USER_TYPE_INTEGRATION && $context->getUserType() !== self::USER_TYPE_ADMIN) {
             throw new GraphQlAuthorizationException(__('User not authorized.'));
         }

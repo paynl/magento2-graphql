@@ -18,7 +18,7 @@ class StartTransaction implements ResolverInterface
     private $startTransactionDataProvider;
 
     /**
-     * @param DataProvider\StartTransaction $startTransactionRepository
+     * @param DataProvider\StartTransaction $startTransactionDataProvider
      */
     public function __construct(DataProvider\StartTransaction $startTransactionDataProvider)
     {

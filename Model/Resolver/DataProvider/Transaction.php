@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Paynl\Graphql\Model\Resolver\DataProvider;
 
 use Paynl\Payment\Model\Config;
-use \Exception;
 
 class Transaction
 {
+    private $config;
+
     public $whitelist = [
         'orderId', 'state', 'stateName', 'currency', 'amount', 'currenyAmount', 'paidAmount',
         'paidCurrenyAmount', 'refundAmount', 'refundCurrenyAmount', 'created', 'orderNumber'
