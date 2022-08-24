@@ -11,6 +11,10 @@ $headers[] = 'Content-Type: application/json';
 
 # Send the Authorization Token as a header, in order to create an access token please refer to the README.md
 $magentoAuthorizationToken = getAdminToken();
+if(empty($magentoAuthorizationToken)) {
+    exit('Empty admin token.');
+}
+
 $headers[] = 'Authorization: Bearer ' . $magentoAuthorizationToken;
 
 $query = <<<Query
