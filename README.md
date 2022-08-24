@@ -10,6 +10,7 @@ This module adds GraphQL functionality to the [PAY. Magento2 plugin](https://git
 - [Description](#description)
 - [Requirements](#requirements)
 - [Installation](#installation)
+- [Create Authorization token](#create-authorization-token)
 - [Usage And Examples](#usage-and-examples)
 - [Queries](#queries)
 - [Mutations](#mutations)
@@ -34,6 +35,26 @@ php bin/magento cache:clean
 ```
 
 The plugin is now installed and ready for use.
+
+# Create Authorization token
+PAY. GraphQL requests require an ADMIN or INTEGRATION Authorization token to be used. 
+
+**ADMIN Authorization token**<br/>
+You can create an ADMIN Authorization token by making a POST to the following REST url:
+http://mymagento.com/rest/all/V1/integration/admin/token?username=MyName&password=MyPassword
+
+An ADMIN Authorization token has a default lifetime of 1 hour, in order to exteextendnt the duration you can change this setting in the magento2 backend.<br/>
+In the backend navigate to `Stores` -> `Configuration` -> `Services` -> `OAuth` and then expand the `Access Token Expiration` tab, here you can change the duration of your ADMIN Authorization token.
+
+**INTEGRATION Authorization token** (Magento 2.4.3 or lower only)<br/>
+You can create an INTEGRATION token via the magento2 backend. 
+- Navigate to System -> Integrations. 
+- Then click "Add New Integration" at the top right of the screen.
+- Enter a name for your new integration, and leave the other fields blank (they are optional). 
+- Then click "Save" at the top right of the screen.
+- Now in the integration-list, click on `Activate` on your newly made integration.
+- Then click "Allow" at the top right of the screen.
+- You will now be presented with several codes. Copy past the "Access Token" and Click Done.
 
 # Usage and Examples
 To see how to use the queries, please check the [samples folder](/samples). <br/>

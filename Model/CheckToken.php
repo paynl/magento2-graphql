@@ -20,7 +20,7 @@ class CheckToken
     {
         // Check if token is an integration or admin token
         if ($context->getUserType() !== self::USER_TYPE_INTEGRATION && $context->getUserType() !== self::USER_TYPE_ADMIN) {
-//throw new GraphQlAuthorizationException(__('User not authorized.'));
+            throw new GraphQlAuthorizationException(__('User not authorized.'));
         }
         return true;
     }
