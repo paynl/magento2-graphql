@@ -18,7 +18,7 @@ function getAdminToken()
     $result = curl_exec($ch);
 
     $magentoAuthorizationToken = null;
-    if (!empty($result)) {
+    if ($result !== false) {
         $magentoAuthorizationToken = json_decode($result, true);
     }
     
