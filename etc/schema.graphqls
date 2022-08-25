@@ -24,15 +24,18 @@ type PaynlStartTransactionOutput {
 type PaynlTransactionOutput {
     orderId  : String!  @doc(description: "The Pay order id")
     state  : Int  @doc(description: "The State number")
-    stateName  : String  @doc(description: "The State name")
-    currency  : String  @doc(description: "The currency used to pay")
-    amount  : String  @doc(description: "The amount in cents")
-    currenyAmount  : String  @doc(description: "The amount in cents in the curency")
-    paidAmount  : String  @doc(description: "The paid amount in cents")
-    paidCurrenyAmount  : String  @doc(description: "The paid amount in cents in the curency")
-    refundAmount  : String  @doc(description: "The refunded amount in cents")
-    refundCurrenyAmount  : String  @doc(description: "The refunded amount in cents in the curency")
+    stateName  : String  @doc(description: "The State name")    
+    amount  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")    
+    amountOriginal  : amountArr @doc(description: "Array containing the 'value' and 'currency'")    
+    amountPaid  : amountArr @doc(description: "Array containing the 'value' and 'currency'")    
+    amountPaidOriginal  : amountArr @doc(description: "Array containing the 'value' and 'currency'")    
+    amountRefund  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")    
+    amountRefundOriginal  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")    
     created  : String  @doc(description: "Created at date")
     orderNumber  : String  @doc(description: "The Order increment id for the Magento order")
     isSuccess  : Boolean  @doc(description: "Was the payment successfull")
+}
+type amountArr {
+    value  : String @doc(description: "The amount in cents")
+    currency  : String @doc(description: "The currency used to pay")
 }
