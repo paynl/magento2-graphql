@@ -5,7 +5,7 @@
   
 # Description
 
-This module adds GraphQL functionality to the [PAY. Magento2 plugin](https://github.com/paynl/magento2-plugin)
+This module adds GraphQL functionality for the [PAY. Magento2 plugin](https://github.com/paynl/magento2-plugin)
 
 - [Description](#description)
 - [Requirements](#requirements)
@@ -102,7 +102,7 @@ As argument it expects the `pay_order_id` and returns type [#PaynlTransactionOut
 
 | Variable    | Type   | Description                              |
 | ----------- | ------ | ---------------------------------------- |
-| redirectUrl | String | The URL to redirect to the PAY. checkout.|
+| redirectUrl | String | The PAY. payment URL                     |
 
 # Support
 https://www.pay.nl
