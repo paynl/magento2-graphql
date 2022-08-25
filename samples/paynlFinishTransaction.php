@@ -1,10 +1,21 @@
 <?php
 
-# Change the following URL to your Magento webshop and extend with '/graphql':
-$url = "http://mymagento.com/graphql";
+require_once('config.php');
+require_once('helper.php');
+
+$urlGraphql = BASE_URL . "/graphql";
 
 $headers = array();
 $headers[] = 'Content-Type: application/json';
+
+# Send the Authorization Token as a header, in order to create an access token please refer to the README.md
+try {
+    $magentoAuthorizationToken = getAdminToken();
+} catch (Exception $exception) {
+    exit('Exception: ' . $exception);
+}
+
+$headers[] = 'Authorization: Bearer ' . $magentoAuthorizationToken;
 
 $query = <<<Query
 mutation paynlFinishTransaction(\$pay_order_id: String!) {
@@ -12,26 +23,42 @@ mutation paynlFinishTransaction(\$pay_order_id: String!) {
         orderId
         state  
         stateName  
-        currency  
-        amount  
-        currenyAmount 
-        paidAmount  
-        paidCurrenyAmount
-        refundAmount 
-        refundCurrenyAmount
+        amount {
+            value
+            currency
+        }  
+        amountOriginal {
+            value
+            currency
+        } 
+        amountPaid {
+            value
+            currency
+        }  
+        amountPaidOriginal {
+            value
+            currency
+        }
+        amountRefund {
+            value
+            currency
+        } 
+        amountRefundOriginal {
+            value
+            currency
+        }
         created
         orderNumber
         isSuccess
     }
 }
 Query;
-
 $variables = ["pay_order_id" => "1234567890abcdefg"];
 
 $data = json_encode(['query' => $query, 'variables' => $variables]);
 
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_URL, $urlGraphql);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 curl_setopt($ch, CURLOPT_POST, 1);
