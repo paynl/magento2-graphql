@@ -64,9 +64,9 @@ They are explained below.
 
 # Queries
 
-- **paynlTransaction**<br/>
+- **paynlGetTransaction**<br/>
 Retrieve a PAY. transaction status based on the PAY order-ID.<br/>
-This query expects `pay_order_id` as an argument and returns a [#PaynlTransactionOutput](#paynltransactionoutput)
+This query expects `pay_order_id` as an argument and returns a [#paynlGetTransactionOutput](#paynlGetTransactionoutput)
 
 # Mutations
 
@@ -76,11 +76,11 @@ This mutation expects `order_id` and optionally `return_url`. It will return typ
 
 - **paynlFinishTransaction**</br>
 This mutation closes the Magento quote when the transaction is marked as successfull and also returns the PAY. transaction info. <br/>
-As argument it expects the `pay_order_id` and returns type [#PaynlTransactionOutput](#paynltransactionoutput)
+As argument it expects the `pay_order_id` and returns type [#paynlGetTransactionOutput](#paynlGetTransactionoutput)
 
 # Types
 
-- **PaynlTransactionOutput**
+- **paynlGetTransactionOutput**
 
 | Variable            | Type    | Description                                   |
 | ------------------- | ------- | --------------------------------------------- |

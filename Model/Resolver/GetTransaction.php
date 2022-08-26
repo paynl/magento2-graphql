@@ -12,15 +12,15 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Paynl\Graphql\Model\CheckToken;
 
-class Transaction implements ResolverInterface
+class GetTransaction implements ResolverInterface
 {
 
     private $transactionDataProvider;
 
     /**
-     * @param DataProvider\Transaction $transactionDataProvider
+     * @param DataProvider\GetTransaction $transactionDataProvider
      */
-    public function __construct(DataProvider\Transaction $transactionDataProvider)
+    public function __construct(DataProvider\GetTransaction $transactionDataProvider)
     {
         $this->transactionDataProvider = $transactionDataProvider;
     }

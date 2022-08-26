@@ -6,7 +6,7 @@ namespace Paynl\Graphql\Model\Resolver\DataProvider;
 
 use Paynl\Payment\Model\Config;
 
-class Transaction
+class GetTransaction
 {
     private $config;
 
