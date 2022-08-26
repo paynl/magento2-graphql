@@ -19,8 +19,8 @@ try {
 $headers[] = 'Authorization: Bearer ' . $magentoAuthorizationToken;
 
 $query = <<<Query
-query paynlTransaction(\$pay_order_id: String!) {
-    paynlTransaction(pay_order_id: \$pay_order_id) {
+query paynlGetTransaction(\$pay_order_id: String!) {
+    paynlGetTransaction(pay_order_id: \$pay_order_id) {
         orderId
         state  
         stateName          
