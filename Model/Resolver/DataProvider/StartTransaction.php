@@ -34,8 +34,8 @@ class StartTransaction
 
         $methodInstance = $this->paymentHelper->getMethodInstance($payment->getMethod());
         if ($methodInstance instanceof \Paynl\Payment\Model\Paymentmethod\Paymentmethod) {
-            $version = PayHelper::getVersion();
-            $redirectUrl = $methodInstance->startTransaction($order, $version);
+            $methodInstance->setGraphqlVersion(PayHelper::getVersion());
+            $redirectUrl = $methodInstance->startTransaction($order);
         }
 
         return ['redirectUrl' => $redirectUrl];
