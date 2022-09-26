@@ -7,6 +7,7 @@ namespace Paynl\Graphql\Model\Resolver\DataProvider;
 use Magento\Payment\Helper\Data as PaymentHelper;
 use Magento\Quote\Model\QuoteRepository;
 use Magento\Sales\Model\OrderRepository;
+use \Paynl\Graphql\Helper\PayHelper;
 
 class StartTransaction
 {
@@ -33,6 +34,7 @@ class StartTransaction
 
         $methodInstance = $this->paymentHelper->getMethodInstance($payment->getMethod());
         if ($methodInstance instanceof \Paynl\Payment\Model\Paymentmethod\Paymentmethod) {
+            $methodInstance->setGraphqlVersion(PayHelper::getVersion());
             $redirectUrl = $methodInstance->startTransaction($order);
         }
 
