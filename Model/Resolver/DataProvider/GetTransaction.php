@@ -24,7 +24,7 @@ class GetTransaction
     {
         $transaction = $this->getTransaction($payOrderId);
         $paymentDetails = $transaction->getData()['paymentDetails'];
-        $data = array_intersect_key($paymentDetails, array_flip($this->whitelist));        
+        $data = array_intersect_key($paymentDetails, array_flip($this->whitelist));
 
         $data['amount'] = array('value' => $paymentDetails['amount'], 'currency' => $paymentDetails['currency']);
         $data['amountOriginal'] = array('value' => $paymentDetails['currenyAmount'], 'currency' => $paymentDetails['currency']);
