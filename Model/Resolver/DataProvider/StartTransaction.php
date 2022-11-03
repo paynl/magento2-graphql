@@ -7,16 +7,15 @@ namespace Paynl\Graphql\Model\Resolver\DataProvider;
 use Magento\Payment\Helper\Data as PaymentHelper;
 use Magento\Quote\Model\QuoteRepository;
 use Magento\Sales\Model\OrderRepository;
+use Paynl\Graphql\Helper\PayHelper;
+use Paynl\Payment\Model\Paymentmethod\Paymentmethod;
 
 class StartTransaction
 {
-    public function __construct(
-        QuoteRepository $quoteRepository,
-        OrderRepository $orderRepository,
-        PaymentHelper $paymentHelper
-    ) {
+    public function __construct(QuoteRepository $quoteRepository, OrderRepository $orderRepository, PaymentHelper $paymentHelper)
+    {
         $this->quoteRepository = $quoteRepository;
-        $this->paymentHelper   = $paymentHelper;
+        $this->paymentHelper = $paymentHelper;
         $this->orderRepository = $orderRepository;
     }
 
@@ -24,7 +23,7 @@ class StartTransaction
     {
         $redirectUrl = '';
 
-        $order = $this->orderRepository->get($options['order_id']);
+        $order = $this->orderRepository->get($options['magento_order_id']);
         $quote = $this->quoteRepository->get($order->getQuoteId());
         $quote->setIsActive(true);
         $this->quoteRepository->save($quote);
@@ -35,7 +34,10 @@ class StartTransaction
         }
 
         $methodInstance = $this->paymentHelper->getMethodInstance($payment->getMethod());
-        if ($methodInstance instanceof \Paynl\Payment\Model\Paymentmethod\Paymentmethod) {
+        if ($methodInstance instanceof Paymentmethod) {
+            if (method_exists($methodInstance, 'setGraphqlVersion')) {
+                $methodInstance->setGraphqlVersion(PayHelper::getVersion());
+            }
             $redirectUrl = $methodInstance->startTransaction($order);
         }
 

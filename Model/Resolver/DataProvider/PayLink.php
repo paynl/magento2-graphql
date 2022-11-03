@@ -7,6 +7,8 @@ namespace Paynl\Graphql\Model\Resolver\DataProvider;
 use Magento\Payment\Helper\Data as PaymentHelper;
 use Magento\Quote\Model\QuoteRepository;
 use Magento\Sales\Model\OrderRepository;
+use Paynl\Graphql\Helper\PayHelper;
+use Paynl\Payment\Model\Paymentmethod\Paymentmethod;
 
 class PayLink
 {
@@ -24,7 +26,7 @@ class PayLink
     {
         $paylink = '';
 
-        $order = $this->orderRepository->get($options['order_id']);
+        $order = $this->orderRepository->get($options['magento_order_id']);
         $quote = $this->quoteRepository->get($order->getQuoteId());
         $quote->setIsActive(true);
         $this->quoteRepository->save($quote);
@@ -38,10 +40,13 @@ class PayLink
             $payment->setMethod('paynl_payment_paylink');
             $payment->save();
             $order->save();
-        }
+        }    
 
         $methodInstance = $this->paymentHelper->getMethodInstance($payment->getMethod());
-        if ($methodInstance instanceof \Paynl\Payment\Model\Paymentmethod\Paymentmethod) {
+        if ($methodInstance instanceof Paymentmethod) {
+            if (method_exists($methodInstance, 'setGraphqlVersion')) {
+                $methodInstance->setGraphqlVersion(PayHelper::getVersion());
+            }
             $paylink = $methodInstance->startTransaction($order);
         }
 

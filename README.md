@@ -5,62 +5,78 @@
   
 # Description
 
-This module adds GraphQL support for the [PAY. Magento2 plugin](https://github.com/paynl/magento2-plugin)
-
+This module adds GraphQL functionality for the [PAY. Magento2 plugin](https://github.com/paynl/magento2-plugin)
 
 - [Description](#description)
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Update instructions](#update-instructions)
+- [Create Authorization token](#create-authorization-token)
+- [Usage And Examples](#usage-and-examples)
 - [Queries](#queries)
 - [Mutations](#mutations)
 - [Types](#types)
-- [Usage](#usage)
 - [Support](#support)
 
 
-
 # Requirements
-
     PHP 7.2 or higher
     PAY. Magento2 plugin 2.4.0 or higher
     Tested up to Magento 2.4.3
 
 
 # Installation
-### Installing
 
-In command line, navigate to the installation directory of Magento2
-
-Enter the following commands:
+On your server's command line, navigate to the installation directory of Magento2 and enter the following commands:
 
 ```
-composer require paynl/magento2-graphql-module
+composer require paynl/magento2-graphql
 php bin/magento setup:upgrade
 php bin/magento cache:clean
 ```
 
-The plugin is now installed
+The plugin is now installed and ready for use.
 
+# Create Authorization token
+PAY. GraphQL requests require an ADMIN or INTEGRATION Authorization token to be used. 
+
+**ADMIN Authorization token**<br/>
+You can create an ADMIN Authorization token by making a POST to the following REST url:
+http://mymagento.com/rest/all/V1/integration/admin/token?username=MyName&password=MyPassword
+
+An ADMIN Authorization token has a default lifetime of 1 hour, in order to extend the duration you can change this setting in the magento2 backend.<br/>
+In the backend navigate to `Stores` -> `Configuration` -> `Services` -> `OAuth` and then expand the `Access Token Expiration` tab, here you can change the duration of your ADMIN Authorization token.
+
+**INTEGRATION Authorization token** (Magento 2.4.3 or lower only)<br/>
+You can create an INTEGRATION token via the magento2 backend. 
+- Navigate to System -> Integrations. 
+- Then click "Add New Integration" at the top right of the screen.
+- Enter a name for your new integration, and leave the other fields blank (they are optional). 
+- Then click "Save" at the top right of the screen.
+- Now in the integration-list, click on `Activate` on your newly made integration.
+- Then click "Allow" at the top right of the screen.
+- You will now be presented with several codes. Copy past the "Access Token" and Click Done.
+
+# Usage and Examples
+To see how to use the queries, please check the [samples folder](/samples). <br/>
+
+This GraphQL library consists of queries, mutations and some other classes.
+They are explained below.
 
 # Queries
 
-## paynlTransaction
-
-Get the PAY. transaction status based on the PAY order_id which can be found in the PAY. backend.<br/>
-This query expects `pay_order_id` as an argument. It will return [#PaynlTransactionOutput](#paynltransactionoutput)
+- **paynlGetTransaction**<br/>
+Retrieve a PAY. transaction status based on the PAY order-ID.<br/>
+This query expects `pay_order_id` as an argument and returns a [#paynlGetTransactionOutput](#paynlGetTransactionoutput)
 
 # Mutations
 
-## paynlStartTransaction
+- **paynlStartTransaction**</br>
+Start a transaction based on the Magento2 order-ID. This will return a URL with the PAY. transaction.<br/>
+This mutation expects `order_id` and optionally `return_url`. It will return type [#PaynlStartTransactionOutput](#paynlstarttransactionoutput)
 
-Start a transaction based on the Magento2 order_id, this will return a url with the PAY. transaction.<br/>
-This mutation expects `order_id` and optionally `return_url`. It will return [#PaynlStartTransactionOutput](#paynlstarttransactionoutput)
-
-## paynlFinishTransaction
-
-The paynlFinishTransaction mutation closes the Magento2 quote if the transaction is marked as successfull and returns the PAY. transaction status. <br/>
-This mutation expects the `pay_order_id`. It will return [#PaynlTransactionOutput](#paynltransactionoutput)
+- **paynlFinishTransaction**</br>
+This mutation closes the Magento quote when the transaction is marked as successfull and also returns the PAY. transaction info. <br/>
+As argument it expects the `pay_order_id` and returns type [#paynlGetTransactionOutput](#paynlGetTransactionoutput)
 
 ## paynlRefundTransaction
 
@@ -80,36 +96,36 @@ The paynlVoidTransaction mutation voids the order.<br/>
 This mutation requires an INTEGRATION or ADMIN Authorization token to be used. <br/>
 This mutation expects the `pay_order_id`. It will return [#PaynlResultOutput](#paynlresultoutput)
 
-## paynlPayLink
+## paynlGetPayLink
 
-The paynlPayLink mutation starts a transaction based on the Magento2 order_id an creates a paylink, this will return a url with the PAY. paylink.<br/>
+The paynlGetPayLink mutation starts a transaction based on the Magento2 order_id an creates a paylink, this will return a url with the PAY. paylink.<br/>
 This mutation expects `order_id` and optionally `return_url`. It will return [#PaynlPayLinkOutput](#paynlstarttransactionoutput)
 
 # Types
 
-## PaynlTransactionOutput
+- **paynlGetTransactionOutput**
 
 | Variable            | Type    | Description                                   |
 | ------------------- | ------- | --------------------------------------------- |
-| orderId             | String  | The Pay order id.                             |
-| state               | Int     | The State number.                             |
-| stateName           | String  | The State name.                               |
-| currency            | String  | The currency used to pay.                     |
+| orderId             | String  | The PAY. order-ID.                            |
+| state               | Int     | The state number.                             |
+| stateName           | String  | The state name.                               |
+| currency            | String  | The currency used in the payment              |
 | amount              | String  | The amount in cents.                          |
-| currenyAmount       | String  | The amount in cents in the curency.           |
+| currenyAmount       | String  | The amount in cents in the currency.          |
 | paidAmount          | String  | The paid amount in cents.                     |
-| paidCurrenyAmount   | String  | The paid amount in cents in the curency.      |
+| paidCurrenyAmount   | String  | The paid amount in cents in the currency.     |
 | refundAmount        | String  | The refunded amount in cents.                 |
-| refundCurrenyAmount | String  | The refunded amount in cents in the curency.  |
-| created             | String  | Created at date.                              |
-| orderNumber         | String  | The Order increment id for the Magento order. |
-| isSuccess           | Boolean | Was the payment successfull.                  |
+| refundCurrenyAmount | String  | The refunded amount in cents in the currency. |
+| created             | String  | Date of creation.                             |
+| orderNumber         | String  | The order number given by Magento.            |
+| isSuccess           | Boolean | True, in case of a successfull payment.       |
 
-## PaynlStartTransactionOutput
+- **PaynlStartTransactionOutput**
 
 | Variable    | Type   | Description                              |
 | ----------- | ------ | ---------------------------------------- |
-| redirectUrl | String | The url to redirect to the pay checkout. |
+| redirectUrl | String | The PAY. payment URL                     |
 
 ## PaynlPayLinkOutput
 
@@ -123,11 +139,6 @@ This mutation expects `order_id` and optionally `return_url`. It will return [#P
 | ----------- | ------  | ---------------------------------------- |
 | result      | Boolean | The result of the action.                |
 | message     | String  | The message output from PAY.             |
-
-
-# Usage
-
-To see how to use the queries, please check the samples folder. 
 
 # Support
 https://www.pay.nl

@@ -10,32 +10,26 @@ use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+use Paynl\Graphql\Model\CheckToken;
 
 class PayLink implements ResolverInterface
 {
-
     private $payLinkDataProvider;
 
     /**
      * @param DataProvider\PayLink $payLinkDataProvider
      */
-    public function __construct(
-        DataProvider\PayLink $payLinkDataProvider
-    ) {
+    public function __construct(DataProvider\PayLink $payLinkDataProvider)
+    {
         $this->payLinkDataProvider = $payLinkDataProvider;
     }
 
     /**
      * @inheritdoc
      */
-    public function resolve(
-        Field $field,
-        $context,
-        ResolveInfo $info,
-        array $value = null,
-        array $args = null
-    ) {        
+    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    {
+        CheckToken::validate($context);
         return $this->payLinkDataProvider->getPayLink($args);
     }
 }
-

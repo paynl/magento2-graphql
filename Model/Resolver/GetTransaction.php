@@ -8,31 +8,26 @@ use Exception;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+use Paynl\Graphql\Model\CheckToken;
 
-
-class Transaction implements ResolverInterface
+class GetTransaction implements ResolverInterface
 {
     private $transactionDataProvider;
 
     /**
-     * @param DataProvider\StartTransaction $startTransactionRepository
+     * @param DataProvider\GetTransaction $transactionDataProvider
      */
-    public function __construct(
-        DataProvider\Transaction $transactionDataProvider
-    ) {
+    public function __construct(DataProvider\GetTransaction $transactionDataProvider)
+    {
         $this->transactionDataProvider = $transactionDataProvider;
     }
 
     /**
      * @inheritdoc
      */
-    public function resolve(
-        Field $field,
-        $context,
-        ResolveInfo $info,
-        array $value = null,
-        array $args = null
-    ) {
+    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    {
+        CheckToken::validate($context);
         return $this->transactionDataProvider->getTransactionData($args['pay_order_id']);
     }
 }

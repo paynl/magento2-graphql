@@ -10,6 +10,7 @@ use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+use Paynl\Graphql\Model\CheckToken;
 
 class StartTransaction implements ResolverInterface
 {
@@ -17,25 +18,19 @@ class StartTransaction implements ResolverInterface
     private $startTransactionDataProvider;
 
     /**
-     * @param DataProvider\StartTransaction $startTransactionRepository
+     * @param DataProvider\StartTransaction $startTransactionDataProvider
      */
-    public function __construct(
-        DataProvider\StartTransaction $startTransactionDataProvider
-    ) {
+    public function __construct(DataProvider\StartTransaction $startTransactionDataProvider)
+    {
         $this->startTransactionDataProvider = $startTransactionDataProvider;
     }
 
     /**
      * @inheritdoc
      */
-    public function resolve(
-        Field $field,
-        $context,
-        ResolveInfo $info,
-        array $value = null,
-        array $args = null
-    ) {
+    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    {
+        CheckToken::validate($context);
         return $this->startTransactionDataProvider->startTransaction($args);
     }
 }
-

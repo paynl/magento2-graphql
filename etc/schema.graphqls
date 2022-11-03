@@ -1,20 +1,20 @@
 type Query {
 
-    paynlTransaction (
+    paynlGetTransaction (
             pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento.")
-    ) : PaynlTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\Transaction") @doc(description: "Get the status of the transaction")
+    ) : paynlGetTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\GetTransaction") @doc(description: "Get the status of the transaction")
 }
 
 type Mutation {
 
     paynlStartTransaction (
-            order_id: String! @doc(description: "Order Id")
+            magento_order_id: String! @doc(description: "The Order Id of the magento2 order, not to be confused with order number")
             return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
     ) : PaynlStartTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\StartTransaction") @doc(description: "Initialize the transaction.")
 
     paynlFinishTransaction (
-            pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento.")
-    ) : PaynlTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\FinishTransaction") @doc(description: "Initialize the finish.")
+            pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento. Executing this mutation closes the Magento2 quote if the transaction is marked as successfull")
+    ) : paynlGetTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\FinishTransaction") @doc(description: "Initialize the transaction.")
 
     paynlRefundTransaction (
             pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
@@ -30,11 +30,10 @@ type Mutation {
             pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
     ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\VoidTransaction") @doc(description: "Initialize the void.")
 
-    paynlPayLink (
-            order_id: String! @doc(description: "Order Id")
+    paynlGetPayLink (
+            magento_order_id: String! @doc(description: "The Order Id of the magento2 order, not to be confused with order number")
             return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
     ) : PaynlPayLinkOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\PayLink") @doc(description: "Initialize the paylink transaction.")
-
 }
 
 type PaynlStartTransactionOutput {
@@ -50,18 +49,21 @@ type PaynlResultOutput {
     message  : String  @doc(description: "The message output from PAY.")
 }
 
-type PaynlTransactionOutput {
-    orderId  : String  @doc(description: "The PAY. order id")
+type paynlGetTransactionOutput {
+    orderId  : String!  @doc(description: "The Pay order id")
     state  : Int  @doc(description: "The State number")
-    stateName  : String  @doc(description: "The State name")
-    currency  : String  @doc(description: "The currency used to PAY.")
-    amount  : String  @doc(description: "The amount in cents")
-    currenyAmount  : String  @doc(description: "The amount in cents in the curency")
-    paidAmount  : String  @doc(description: "The paid amount in cents")
-    paidCurrenyAmount  : String  @doc(description: "The paid amount in cents in the curency")
-    refundAmount  : String  @doc(description: "The refunded amount in cents")
-    refundCurrenyAmount  : String  @doc(description: "The refunded amount in cents in the curency")
+    stateName  : String  @doc(description: "The State name")    
+    amount  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")    
+    amountOriginal  : amountArr @doc(description: "Array containing the 'value' and 'currency'")    
+    amountPaid  : amountArr @doc(description: "Array containing the 'value' and 'currency'")    
+    amountPaidOriginal  : amountArr @doc(description: "Array containing the 'value' and 'currency'")    
+    amountRefund  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")    
+    amountRefundOriginal  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")    
     created  : String  @doc(description: "Created at date")
     orderNumber  : String  @doc(description: "The Order increment id for the Magento order")
     isSuccess  : Boolean  @doc(description: "Was the payment successfull")
+}
+type amountArr {
+    value  : String @doc(description: "The amount in cents")
+    currency  : String @doc(description: "The currency used to pay")
 }
