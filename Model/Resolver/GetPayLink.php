@@ -12,14 +12,14 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Paynl\Graphql\Model\CheckToken;
 
-class PayLink implements ResolverInterface
+class GetPayLink implements ResolverInterface
 {
     private $payLinkDataProvider;
 
     /**
      * @param DataProvider\PayLink $payLinkDataProvider
      */
-    public function __construct(DataProvider\PayLink $payLinkDataProvider)
+    public function __construct(DataProvider\GetPayLink $payLinkDataProvider)
     {
         $this->payLinkDataProvider = $payLinkDataProvider;
     }

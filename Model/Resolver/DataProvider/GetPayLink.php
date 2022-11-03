@@ -10,7 +10,7 @@ use Magento\Sales\Model\OrderRepository;
 use Paynl\Graphql\Helper\PayHelper;
 use Paynl\Payment\Model\Paymentmethod\Paymentmethod;
 
-class PayLink
+class GetPayLink
 {
     public function __construct(
         QuoteRepository $quoteRepository,
