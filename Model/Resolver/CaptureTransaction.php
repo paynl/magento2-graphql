@@ -12,10 +12,13 @@ use Paynl\Graphql\Model\CheckToken;
 
 class CaptureTransaction implements ResolverInterface
 {
+    /**
+     * @var DataProvider\CaptureTransaction
+     */
     private $captureTransactionDataProvider;
 
     /**
-     * @param DataProvider\CaptureTransaction $CaptureTransactionRepository
+     * @param DataProvider\CaptureTransaction $captureTransactionDataProvider
      */
     public function __construct(DataProvider\CaptureTransaction $captureTransactionDataProvider)
     {

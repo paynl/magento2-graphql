@@ -9,26 +9,33 @@ use \Exception;
 
 class CaptureTransaction
 {
+    /**
+     * @param Config $config
+     */
     public function __construct(
         Config $config
     ) {
-        $this->config   = $config;
+        $this->config = $config;
     }
 
+    /**
+     * @param array $options
+     * @return array
+     */
     public function CaptureTransaction($options)
     {
         $message = '';
         $result = false;
         try {
-            $this->config->configureSDK();            
-            $capture = \Paynl\Transaction::capture($options['pay_order_id'], ($options['amount'] ?? null));    
+            $this->config->configureSDK();
+            $capture = \Paynl\Transaction::capture($options['pay_order_id'], ($options['amount'] ?? null));
             if ($capture === true) {
                 $message = 'PAY. has successfully captured the transaction.';
                 $result = $capture;
             } else {
                 $message = 'PAY. could not process this capture.';
             }
-        } catch (\Exception $e) { 
+        } catch (\Exception $e) {
             $message = strtolower($e->getMessage());
             if (substr($message, 0, 19) == '403 - access denied') {
                 $message = 'PAY. could not authorize this capture. Errorcode: PAY-MAGENTO2-GRAPHQL-CAPTURE-001.';

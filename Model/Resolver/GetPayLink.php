@@ -14,6 +14,9 @@ use Paynl\Graphql\Model\CheckToken;
 
 class GetPayLink implements ResolverInterface
 {
+    /**
+     * @var DataProvider\PayLink
+     */
     private $payLinkDataProvider;
 
     /**

@@ -14,7 +14,9 @@ use Paynl\Graphql\Model\CheckToken;
 
 class StartTransaction implements ResolverInterface
 {
-
+    /**
+     * @var DataProvider\StartTransaction
+     */
     private $startTransactionDataProvider;
 
     /**

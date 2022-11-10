@@ -12,6 +12,11 @@ use Paynl\Payment\Model\Paymentmethod\Paymentmethod;
 
 class GetPayLink
 {
+    /**
+     * @param QuoteRepository $quoteRepository
+     * @param OrderRepository $orderRepository
+     * @param PaymentHelper $paymentHelper
+     */
     public function __construct(
         QuoteRepository $quoteRepository,
         OrderRepository $orderRepository,
@@ -22,6 +27,10 @@ class GetPayLink
         $this->orderRepository = $orderRepository;
     }
 
+    /**
+     * @param array $options
+     * @return array
+     */
     public function getPayLink($options)
     {
         $paylink = '';
@@ -40,7 +49,7 @@ class GetPayLink
             $payment->setMethod('paynl_payment_paylink');
             $payment->save();
             $order->save();
-        }    
+        }
 
         $methodInstance = $this->paymentHelper->getMethodInstance($payment->getMethod());
         if ($methodInstance instanceof Paymentmethod) {

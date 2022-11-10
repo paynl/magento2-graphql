@@ -12,10 +12,13 @@ use Paynl\Graphql\Model\CheckToken;
 
 class RefundTransaction implements ResolverInterface
 {
+    /**
+     * @var DataProvider\RefundTransaction
+     */
     private $refundTransactionDataProvider;
 
     /**
-     * @param DataProvider\RefundTransaction $refundTransactionRepository
+     * @param DataProvider\RefundTransaction $refundTransactionDataProvider
      */
     public function __construct(DataProvider\RefundTransaction $refundTransactionDataProvider)
     {

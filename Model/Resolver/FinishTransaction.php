@@ -16,6 +16,9 @@ use Paynl\Graphql\Model\CheckToken;
 
 class FinishTransaction implements ResolverInterface
 {
+    /**
+     * @var DataProvider\Transaction
+     */
     private $transactionDataProvider;
     /**
      * @var QuoteRepository

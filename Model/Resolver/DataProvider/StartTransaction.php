@@ -12,6 +12,11 @@ use Paynl\Payment\Model\Paymentmethod\Paymentmethod;
 
 class StartTransaction
 {
+    /**
+     * @param QuoteRepository $quoteRepository
+     * @param OrderRepository $orderRepository
+     * @param PaymentHelper $paymentHelper
+     */
     public function __construct(QuoteRepository $quoteRepository, OrderRepository $orderRepository, PaymentHelper $paymentHelper)
     {
         $this->quoteRepository = $quoteRepository;
@@ -19,6 +24,10 @@ class StartTransaction
         $this->orderRepository = $orderRepository;
     }
 
+    /**
+     * @param array $options
+     * @return array
+     */
     public function startTransaction($options)
     {
         $redirectUrl = '';

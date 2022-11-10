@@ -8,18 +8,30 @@ use Paynl\Payment\Model\Config;
 
 class GetTransaction
 {
+    /**
+     * @var Config
+     */
     private $config;
-
+    /**
+     * @var array
+     */
     public $whitelist = [
         'orderId', 'state', 'stateName', 'currency', 'amount', 'currenyAmount', 'paidAmount',
         'paidCurrenyAmount', 'refundAmount', 'refundCurrenyAmount', 'created', 'orderNumber'
     ];
 
+    /**
+     * @param Config $config
+     */
     public function __construct(Config $config)
     {
         $this->config = $config;
     }
 
+    /**
+     * @param string $payOrderId
+     * @return array
+     */
     public function getTransactionData($payOrderId)
     {
         $transaction = $this->getTransaction($payOrderId);
@@ -38,6 +50,10 @@ class GetTransaction
         return $data;
     }
 
+    /**
+     * @param string $payOrderId
+     * @return \Paynl\Transaction::status
+     */
     public function getTransaction($payOrderId)
     {
         \Paynl\Config::setApiToken($this->config->getApiToken());

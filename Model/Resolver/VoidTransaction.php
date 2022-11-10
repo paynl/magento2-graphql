@@ -12,10 +12,13 @@ use Paynl\Graphql\Model\CheckToken;
 
 class VoidTransaction implements ResolverInterface
 {
+    /**
+     * @var DataProvider\VoidTransaction
+     */
     private $voidTransactionDataProvider;
 
     /**
-     * @param DataProvider\VoidTransaction $VoidTransactionRepository
+     * @param DataProvider\VoidTransaction $voidTransactionDataProvider
      */
     public function __construct(DataProvider\VoidTransaction $voidTransactionDataProvider)
     {

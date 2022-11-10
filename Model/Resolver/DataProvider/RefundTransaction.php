@@ -9,19 +9,26 @@ use \Exception;
 
 class RefundTransaction
 {
+    /**
+     * @param Config $config
+     */
     public function __construct(
         Config $config
     ) {
         $this->config   = $config;
     }
 
+    /**
+     * @param array $options
+     * @return array
+     */
     public function RefundTransaction($options)
     {
         $message = '';
         $result = 0;
         try {
             $this->config->configureSDK();
-            $refund = \Paynl\Transaction::refund($options['pay_order_id'], $options['amount'])->getData();            
+            $refund = \Paynl\Transaction::refund($options['pay_order_id'], $options['amount'])->getData();
             if (isset($refund['request']['result']) && $refund['request']['result']) {
                 $message = $refund['description'] ?? '';
                 $result = $refund['request']['result'];
@@ -30,7 +37,7 @@ class RefundTransaction
             } else {
                 $message = 'PAY. could not process this refund.';
             }
-        } catch (\Exception $e) { 
+        } catch (\Exception $e) {
             $message = strtolower($e->getMessage());
             if (substr($message, 0, 19) == '403 - access denied') {
                 $message = 'PAY. could not authorize this refund. Errorcode: PAY-MAGENTO2-GRAPHQL-REFUND-001.';

@@ -9,12 +9,19 @@ use \Exception;
 
 class VoidTransaction
 {
+    /**
+     * @param Config $config
+     */
     public function __construct(
         Config $config
     ) {
         $this->config   = $config;
     }
 
+    /**
+     * @param array $options
+     * @return array
+     */
     public function VoidTransaction($options)
     {
         $message = '';
