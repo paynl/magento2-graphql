@@ -21,7 +21,8 @@ $headers[] = 'Authorization: Bearer ' . $magentoAuthorizationToken;
 $query = <<<Query
 mutation paynlCaptureTransaction(\$pay_order_id: String!) {
     paynlCaptureTransaction(pay_order_id: \$pay_order_id) {
-        paylink
+        result,
+        message
     }
 }
 Query;
