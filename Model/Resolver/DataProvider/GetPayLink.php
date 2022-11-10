@@ -13,6 +13,19 @@ use Paynl\Payment\Model\Paymentmethod\Paymentmethod;
 class GetPayLink
 {
     /**
+     * @var QuoteRepository
+     */
+    private $quoteRepository;
+    /**
+     * @var OrderRepository
+     */
+    private $orderRepository;
+    /**
+     * @var PaymentHelper
+     */
+    private $paymentHelper;
+
+    /**
      * @param QuoteRepository $quoteRepository
      * @param OrderRepository $orderRepository
      * @param PaymentHelper $paymentHelper

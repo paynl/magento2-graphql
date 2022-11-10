@@ -10,6 +10,11 @@ use \Exception;
 class CaptureTransaction
 {
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * @param Config $config
      */
     public function __construct(
@@ -24,7 +29,6 @@ class CaptureTransaction
      */
     public function CaptureTransaction($options)
     {
-        $message = '';
         $result = false;
         try {
             $this->config->configureSDK();

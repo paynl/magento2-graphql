@@ -15,12 +15,12 @@ use Paynl\Graphql\Model\CheckToken;
 class GetPayLink implements ResolverInterface
 {
     /**
-     * @var DataProvider\PayLink
+     * @var DataProvider\GetPayLink
      */
     private $payLinkDataProvider;
 
     /**
-     * @param DataProvider\PayLink $payLinkDataProvider
+     * @param DataProvider\GetPayLink $payLinkDataProvider
      */
     public function __construct(DataProvider\GetPayLink $payLinkDataProvider)
     {

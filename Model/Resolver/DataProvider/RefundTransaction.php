@@ -10,12 +10,17 @@ use \Exception;
 class RefundTransaction
 {
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * @param Config $config
      */
     public function __construct(
         Config $config
     ) {
-        $this->config   = $config;
+        $this->config = $config;
     }
 
     /**
@@ -24,7 +29,6 @@ class RefundTransaction
      */
     public function RefundTransaction($options)
     {
-        $message = '';
         $result = 0;
         try {
             $this->config->configureSDK();
