@@ -18,7 +18,7 @@ type Mutation {
 
     paynlRefundTransaction (
             pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
-            amount: String! @doc(description: "The amount you wish to refund.")
+            amount: String @doc(description: "The amount you wish to refund.")
     ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\RefundTransaction") @doc(description: "Initialize the refund.")
 
     paynlCaptureTransaction (

@@ -32,7 +32,7 @@ class RefundTransaction
         $result = 0;
         try {
             $this->config->configureSDK();
-            $refund = \Paynl\Transaction::refund($options['pay_order_id'], $options['amount'])->getData();
+            $refund = \Paynl\Transaction::refund($options['pay_order_id'], ($options['amount'] ?? null))->getData();
             if (isset($refund['request']['result']) && $refund['request']['result']) {
                 $message = $refund['description'] ?? '';
                 $result = $refund['request']['result'];
