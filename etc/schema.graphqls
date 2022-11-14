@@ -15,10 +15,38 @@ type Mutation {
     paynlFinishTransaction (
             pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento. Executing this mutation closes the Magento2 quote if the transaction is marked as successfull")
     ) : paynlGetTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\FinishTransaction") @doc(description: "Initialize the transaction.")
+
+    paynlRefundTransaction (
+            pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
+            amount: String @doc(description: "The amount you wish to refund.")
+    ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\RefundTransaction") @doc(description: "Initialize the refund.")
+
+    paynlCaptureTransaction (
+            pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
+            amount: String @doc(description: "The amount you wish to capture.")
+    ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\CaptureTransaction") @doc(description: "Initialize the capture.")
+
+    paynlVoidTransaction (
+            pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
+    ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\VoidTransaction") @doc(description: "Initialize the void.")
+
+    paynlGetPayLink (
+            magento_order_id: String! @doc(description: "The Order Id of the magento2 order, not to be confused with order number")
+            return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
+    ) : PaynlPayLinkOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\GetPayLink") @doc(description: "Initialize the paylink transaction.")
 }
 
 type PaynlStartTransactionOutput {
-    redirectUrl  : String  @doc(description: "The url to redirect to the pay checkout")
+    redirectUrl  : String  @doc(description: "The url to redirect to the PAY. checkout")
+}
+
+type PaynlPayLinkOutput {
+    paylink  : String  @doc(description: "The url to redirect to the PAY. paylink")
+}
+
+type PaynlResultOutput {
+    result   : Boolean @doc(description: "The result of the action")
+    message  : String  @doc(description: "The message output from PAY.")
 }
 
 type paynlGetTransactionOutput {

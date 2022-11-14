@@ -12,19 +12,19 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Paynl\Graphql\Model\CheckToken;
 
-class StartTransaction implements ResolverInterface
+class GetPayLink implements ResolverInterface
 {
     /**
-     * @var DataProvider\StartTransaction
+     * @var DataProvider\GetPayLink
      */
-    private $startTransactionDataProvider;
+    private $payLinkDataProvider;
 
     /**
-     * @param DataProvider\StartTransaction $startTransactionDataProvider
+     * @param DataProvider\GetPayLink $payLinkDataProvider
      */
-    public function __construct(DataProvider\StartTransaction $startTransactionDataProvider)
+    public function __construct(DataProvider\GetPayLink $payLinkDataProvider)
     {
-        $this->startTransactionDataProvider = $startTransactionDataProvider;
+        $this->payLinkDataProvider = $payLinkDataProvider;
     }
 
     /**
@@ -33,6 +33,6 @@ class StartTransaction implements ResolverInterface
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
         CheckToken::validate($context);
-        return $this->startTransactionDataProvider->startTransaction($args);
+        return $this->payLinkDataProvider->getPayLink($args);
     }
 }

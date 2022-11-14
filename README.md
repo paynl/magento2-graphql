@@ -78,6 +78,29 @@ This mutation expects `order_id` and optionally `return_url`. It will return typ
 This mutation closes the Magento quote when the transaction is marked as successfull and also returns the PAY. transaction info. <br/>
 As argument it expects the `pay_order_id` and returns type [#paynlGetTransactionOutput](#paynlGetTransactionoutput)
 
+## paynlRefundTransaction
+
+The paynlRefundTransaction mutation refunds the order. <br/>
+This mutation requires an INTEGRATION or ADMIN Authorization token to be used. <br/>
+This mutation expects the `pay_order_id` and the `amount`. It will return [#PaynlResultOutput](#paynlresultoutput)
+
+## paynlCaptureTransaction
+
+The paynlCaptureTransaction captures the order.<br/>
+This mutation requires an INTEGRATION or ADMIN Authorization token to be used. <br/>
+This mutation expects the `pay_order_id` and optionally the `amount`. It will return [#PaynlResultOutput](#paynlresultoutput)
+
+## paynlVoidTransaction
+
+The paynlVoidTransaction mutation voids the order.<br/>
+This mutation requires an INTEGRATION or ADMIN Authorization token to be used. <br/>
+This mutation expects the `pay_order_id`. It will return [#PaynlResultOutput](#paynlresultoutput)
+
+## paynlGetPayLink
+
+The paynlGetPayLink mutation starts a transaction based on the Magento2 order_id an creates a paylink, this will return a url with the PAY. paylink.<br/>
+This mutation expects `order_id` and optionally `return_url`. It will return [#PaynlPayLinkOutput](#paynlstarttransactionoutput)
+
 # Types
 
 - **paynlGetTransactionOutput**
@@ -103,6 +126,19 @@ As argument it expects the `pay_order_id` and returns type [#paynlGetTransaction
 | Variable    | Type   | Description                              |
 | ----------- | ------ | ---------------------------------------- |
 | redirectUrl | String | The PAY. payment URL                     |
+
+## PaynlPayLinkOutput
+
+| Variable    | Type   | Description                              |
+| ----------- | ------ | ---------------------------------------- |
+| paylink     | String | The url to redirect to the PAY. paylink. |
+
+## PaynlResultOutput
+
+| Variable    | Type    | Description                              |
+| ----------- | ------  | ---------------------------------------- |
+| result      | Boolean | The result of the action.                |
+| message     | String  | The message output from PAY.             |
 
 # Support
 https://www.pay.nl

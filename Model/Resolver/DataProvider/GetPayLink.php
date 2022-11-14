@@ -10,7 +10,7 @@ use Magento\Sales\Model\OrderRepository;
 use Paynl\Graphql\Helper\PayHelper;
 use Paynl\Payment\Model\Paymentmethod\Paymentmethod;
 
-class StartTransaction
+class GetPayLink
 {
     /**
      * @var QuoteRepository
@@ -30,10 +30,13 @@ class StartTransaction
      * @param OrderRepository $orderRepository
      * @param PaymentHelper $paymentHelper
      */
-    public function __construct(QuoteRepository $quoteRepository, OrderRepository $orderRepository, PaymentHelper $paymentHelper)
-    {
+    public function __construct(
+        QuoteRepository $quoteRepository,
+        OrderRepository $orderRepository,
+        PaymentHelper $paymentHelper
+    ) {
         $this->quoteRepository = $quoteRepository;
-        $this->paymentHelper = $paymentHelper;
+        $this->paymentHelper   = $paymentHelper;
         $this->orderRepository = $orderRepository;
     }
 
@@ -41,9 +44,9 @@ class StartTransaction
      * @param array $options
      * @return array
      */
-    public function startTransaction($options)
+    public function getPayLink($options)
     {
-        $redirectUrl = '';
+        $paylink = '';
 
         $order = $this->orderRepository->get($options['magento_order_id']);
         $quote = $this->quoteRepository->get($order->getQuoteId());
@@ -55,14 +58,20 @@ class StartTransaction
             $payment->setAdditionalInformation('returnUrl', $options['return_url']);
         }
 
+        if ($payment->getMethod() != 'paynl_payment_paylink') {
+            $payment->setMethod('paynl_payment_paylink');
+            $payment->save();
+            $order->save();
+        }
+
         $methodInstance = $this->paymentHelper->getMethodInstance($payment->getMethod());
         if ($methodInstance instanceof Paymentmethod) {
             if (method_exists($methodInstance, 'setGraphqlVersion')) {
                 $methodInstance->setGraphqlVersion(PayHelper::getVersion());
             }
-            $redirectUrl = $methodInstance->startTransaction($order);
+            $paylink = $methodInstance->startTransaction($order);
         }
 
-        return ['redirectUrl' => $redirectUrl];
+        return ['paylink' => $paylink];
     }
 }
