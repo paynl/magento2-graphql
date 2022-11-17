@@ -38,10 +38,12 @@ type Mutation {
 
 type PaynlStartTransactionOutput {
     redirectUrl  : String  @doc(description: "The url to redirect to the PAY. checkout")
+    message  : String  @doc(description: "The message output from PAY.")
 }
 
 type PaynlPayLinkOutput {
     paylink  : String  @doc(description: "The url to redirect to the PAY. paylink")
+    message  : String  @doc(description: "The message output from PAY.")
 }
 
 type PaynlResultOutput {
