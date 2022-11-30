@@ -22,6 +22,7 @@ $query = <<<Query
 mutation paynlGetPayLink(\$magento_order_id: String!, \$return_url: String) {
     paynlGetPayLink(magento_order_id: \$magento_order_id, return_url: \$return_url) {
         paylink
+        message
     }
 }
 Query;

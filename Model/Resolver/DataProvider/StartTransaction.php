@@ -46,6 +46,16 @@ class StartTransaction
         $redirectUrl = '';
 
         $order = $this->orderRepository->get($options['magento_order_id']);
+
+        # Check if order has already been (partially) Paid.
+        $orderTotal = round(floatval($order->getBaseGrandTotal()), 2);
+        $orderDue = round(floatval($order->getBaseTotalDue()), 2);
+        if ($orderDue == 0) {
+            return ['message' => 'Order has already been Paid.'];
+        } elseif ($orderDue != $orderTotal) {
+            return ['message' => 'Order has already been partially Paid.'];
+        }
+
         $quote = $this->quoteRepository->get($order->getQuoteId());
         $quote->setIsActive(true);
         $this->quoteRepository->save($quote);
@@ -63,6 +73,6 @@ class StartTransaction
             $redirectUrl = $methodInstance->startTransaction($order);
         }
 
-        return ['redirectUrl' => $redirectUrl];
+        return ['redirectUrl' => $redirectUrl, 'message' => 'success'];
     }
 }
