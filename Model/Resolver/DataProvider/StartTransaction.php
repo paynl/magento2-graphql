@@ -48,8 +48,8 @@ class StartTransaction
         $order = $this->orderRepository->get($options['magento_order_id']);
 
         # Check if order has already been (partially) Paid.
-        $orderTotal = round($order->getBaseGrandTotal(), 2);
-        $orderDue = round($order->getBaseTotalDue(), 2);
+        $orderTotal = round(floatval($order->getBaseGrandTotal()), 2);
+        $orderDue = round(floatval($order->getBaseTotalDue()), 2);
         if ($orderDue == 0) {
             return ['message' => 'Order has already been Paid.'];
         } elseif ($orderDue != $orderTotal) {
