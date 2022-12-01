@@ -9,6 +9,7 @@ use Magento\Quote\Model\QuoteRepository;
 use Magento\Sales\Model\OrderRepository;
 use Paynl\Graphql\Helper\PayHelper;
 use Paynl\Payment\Model\Paymentmethod\Paymentmethod;
+use Magento\Framework\Phrase;
 
 class GetPayLink
 {
@@ -54,9 +55,13 @@ class GetPayLink
         $orderTotal = round(floatval($order->getBaseGrandTotal()), 2);
         $orderDue = round(floatval($order->getBaseTotalDue()), 2);
         if ($orderDue == 0) {
-            return ['message' => 'Order has already been Paid.'];
+            throw new \Magento\Framework\GraphQl\Exception\GraphQlInputException(
+                new Phrase('Order has already been Paid.')
+            ); 
         } elseif ($orderDue != $orderTotal) {
-            return ['message' => 'Order has already been partially Paid.'];
+            throw new \Magento\Framework\GraphQl\Exception\GraphQlInputException(
+                new Phrase('Order has already been partially Paid.')
+            );     
         }
 
         $quote = $this->quoteRepository->get($order->getQuoteId());
@@ -82,6 +87,6 @@ class GetPayLink
             $paylink = $methodInstance->startTransaction($order);
         }
 
-        return ['paylink' => $paylink, 'message' => 'success'];
+        return ['paylink' => $paylink];
     }
 }
