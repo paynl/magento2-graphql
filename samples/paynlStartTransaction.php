@@ -22,7 +22,6 @@ $query = <<<Query
 mutation paynlStartTransaction(\$magento_order_id: String!, \$return_url: String) {
     paynlStartTransaction(magento_order_id: \$magento_order_id, return_url: \$return_url) {
         redirectUrl
-        message
     }
 }
 Query;
