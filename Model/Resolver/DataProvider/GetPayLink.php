@@ -56,9 +56,9 @@ class GetPayLink
         $orderTotal = round(floatval($order->getBaseGrandTotal()), 2);
         $orderDue = round(floatval($order->getBaseTotalDue()), 2);
         if ($orderDue == 0) {
-            throw new GraphQlInputException(__('Order has already been Paid.'));
+            throw new GraphQlInputException(__('Order has already been paid.'));
         } elseif ($orderDue != $orderTotal) {
-            throw new GraphQlInputException(__('Order has already been partially Paid.'));
+            throw new GraphQlInputException(__('Order has already been partially paid.'));
         }
 
         $quote = $this->quoteRepository->get($order->getQuoteId());
