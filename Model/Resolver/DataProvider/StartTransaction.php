@@ -9,7 +9,7 @@ use Magento\Quote\Model\QuoteRepository;
 use Magento\Sales\Model\OrderRepository;
 use Paynl\Graphql\Helper\PayHelper;
 use Paynl\Payment\Model\Paymentmethod\Paymentmethod;
-use Magento\Framework\Phrase;
+use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 
 class StartTransaction
 {
@@ -41,6 +41,7 @@ class StartTransaction
     /**
      * @param array $options
      * @return array
+     * @throws GraphQlInputException
      */
     public function startTransaction($options)
     {
@@ -52,13 +53,9 @@ class StartTransaction
         $orderTotal = round(floatval($order->getBaseGrandTotal()), 2);
         $orderDue = round(floatval($order->getBaseTotalDue()), 2);
         if ($orderDue == 0) {
-            throw new \Magento\Framework\GraphQl\Exception\GraphQlInputException(
-                new Phrase('Order has already been Paid.')
-            ); 
+            throw new GraphQlInputException(__('Order has already been Paid.'));
         } elseif ($orderDue != $orderTotal) {
-            throw new \Magento\Framework\GraphQl\Exception\GraphQlInputException(
-                new Phrase('Order has already been partially Paid.')
-            ); 
+            throw new GraphQlInputException(__('Order has already been partially Paid.'));
         }
 
         $quote = $this->quoteRepository->get($order->getQuoteId());
