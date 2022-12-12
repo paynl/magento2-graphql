@@ -1,8 +1,9 @@
 type Query {
 
-    paynlGetTransaction (
-            pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento.")
-    ) : paynlGetTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\GetTransaction") @doc(description: "Get the status of the transaction")
+    paynlGetTransaction(pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento.")):
+                            paynlGetTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\GetTransaction") @doc(description: "Get the status of the transaction")
+    paynlGetPaymentMethods(pay_order_id: String! @doc(description: "tekst en uitleg")):
+                            paynlPaymentMethodsOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\GetPaymentMethods") @doc(description: "Get the available methods")
 }
 
 type Mutation {
@@ -52,17 +53,28 @@ type PaynlResultOutput {
 type paynlGetTransactionOutput {
     orderId  : String!  @doc(description: "The Pay order id")
     state  : Int  @doc(description: "The State number")
-    stateName  : String  @doc(description: "The State name")    
-    amount  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")    
-    amountOriginal  : amountArr @doc(description: "Array containing the 'value' and 'currency'")    
-    amountPaid  : amountArr @doc(description: "Array containing the 'value' and 'currency'")    
-    amountPaidOriginal  : amountArr @doc(description: "Array containing the 'value' and 'currency'")    
-    amountRefund  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")    
-    amountRefundOriginal  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")    
+    stateName  : String  @doc(description: "The State name")
+    amount  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")
+    amountOriginal  : amountArr @doc(description: "Array containing the 'value' and 'currency'")
+    amountPaid  : amountArr @doc(description: "Array containing the 'value' and 'currency'")
+    amountPaidOriginal  : amountArr @doc(description: "Array containing the 'value' and 'currency'")
+    amountRefund  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")
+    amountRefundOriginal  : amountArr  @doc(description: "Array containing the 'value' and 'currency'")
     created  : String  @doc(description: "Created at date")
     orderNumber  : String  @doc(description: "The Order increment id for the Magento order")
     isSuccess  : Boolean  @doc(description: "Was the payment successfull")
 }
+
+type paynlPaymentMethodsOutput {
+    methods: [PayMethod]
+}
+
+type PayMethod {
+    name: String
+    title: String
+    profileid: String
+}
+
 type amountArr {
     value  : String @doc(description: "The amount in cents")
     currency  : String @doc(description: "The currency used to pay")
