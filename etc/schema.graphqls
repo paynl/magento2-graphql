@@ -71,7 +71,7 @@ type paynlPaymentMethodsOutput {
 type PayMethod {
     name: String
     title: String
-    profileid: String
+    profileid: Int
 }
 
 type amountArr {
