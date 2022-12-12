@@ -3,7 +3,7 @@
 require_once('config.php');
 require_once('helper.php');
 
-# Change the following URL to your Magento webshop and extend with '/graphql':
+# Define your BASE_URL in config.php
 $urlGraphql = BASE_URL . "/graphql";
 
 $headers = array();

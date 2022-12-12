@@ -37,7 +37,7 @@ class GetPaymentMethods
     }
 
     /**
-     * @return string[]
+     * @return array[]
      */
     public function getPaymentMethods()
     {
