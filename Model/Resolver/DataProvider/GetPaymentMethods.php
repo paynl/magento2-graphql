@@ -48,13 +48,12 @@ class GetPaymentMethods
 
         foreach ($paymentMethodList as $methodCode => $value) {
             if (strpos($methodCode, 'paynl_') !== false && !in_array($methodCode, $excludes)) {
-                $code = $this->store->getConfig('payment/' . $methodCode . '/payment_option_id');
                 $active = $this->store->getConfig('payment/' . $methodCode . '/active');
                 if (!empty($active)) {
                     $activeMethods[] = [
                         'name' => $methodCode,
                         'title' => $value['title'] ?? '',
-                        'profileid' => $code
+                        'profileid' => $this->store->getConfig('payment/' . $methodCode . '/payment_option_id')
                     ];
                 }
             }
