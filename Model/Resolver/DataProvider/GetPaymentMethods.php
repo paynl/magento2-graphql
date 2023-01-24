@@ -53,7 +53,8 @@ class GetPaymentMethods
                     $activeMethods[] = [
                         'name' => $methodCode,
                         'title' => $value['title'] ?? '',
-                        'profileid' => $this->store->getConfig('payment/' . $methodCode . '/payment_option_id')
+                        'profileid' => $this->store->getConfig('payment/' . $methodCode . '/payment_option_id'),
+                        'brandid' => $this->config->brands[$methodCode] ?? '-1'
                     ];
                 }
             }

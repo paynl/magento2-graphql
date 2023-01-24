@@ -25,6 +25,7 @@ query paynlGetPaymentMethods {
             name
             title
             profileid
+            brandid
         }
     }
 }

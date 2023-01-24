@@ -72,6 +72,7 @@ type PayMethod {
     name: String
     title: String
     profileid: Int
+    brandid: Int
 }
 
 type amountArr {

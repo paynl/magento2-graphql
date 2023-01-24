@@ -139,6 +139,7 @@ This mutation expects `order_id` and optionally `return_url`. It will return [#P
 | name      | String | Name of the method       |
 | title     | String | Title of the method.     |
 | profileid | Int    | ProfileId of the method. |
+| brandid   | Int    | Image id of the method.  |
 
 - **PaynlStartTransactionOutput**
 
