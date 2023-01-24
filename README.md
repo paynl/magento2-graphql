@@ -68,6 +68,10 @@ They are explained below.
 Retrieve a PAY. transaction status based on the PAY order-ID.<br/>
 This query expects `pay_order_id` as an argument and returns a [#paynlGetTransactionOutput](#paynlGetTransactionoutput)
 
+- **paynlGetPaymentMethods**<br/>
+  Retrieve all activated Pay. payment methods.<br/>
+  Returns [#paynlPaymentMethodsOutput](#paynlPaymentMethodsOutput) 
+
 # Mutations
 
 - **paynlStartTransaction**</br>
@@ -120,6 +124,22 @@ This mutation expects `order_id` and optionally `return_url`. It will return [#P
 | created             | String  | Date of creation.                             |
 | orderNumber         | String  | The order number given by Magento.            |
 | isSuccess           | Boolean | True, in case of a successfull payment.       |
+
+- **paynlPaymentMethodsOutput**
+
+| Variable | Type      | Description                  |
+|----------|-----------|------------------------------|
+| methods  | PayMethod | Collection of type PayMethod |
+
+
+- **PayMethod**
+
+| Variable  | Type   | Description              |
+|-----------|--------|--------------------------|
+| name      | String | Name of the method       |
+| title     | String | Title of the method.     |
+| profileid | Int    | ProfileId of the method. |
+| brandid   | Int    | Image id of the method.  |
 
 - **PaynlStartTransactionOutput**
 

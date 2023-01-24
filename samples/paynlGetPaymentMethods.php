@@ -13,22 +13,25 @@ $headers[] = 'Content-Type: application/json';
 try {
     $magentoAuthorizationToken = getAdminToken();
 } catch (Exception $exception) {
-    exit('Exception: ' . $exception);
+    showcontent('Exception: ' . $exception);
 }
 
 $headers[] = 'Authorization: Bearer ' . $magentoAuthorizationToken;
 
 $query = <<<Query
-mutation paynlVoidTransaction(\$pay_order_id: String!) {
-    paynlVoidTransaction(pay_order_id: \$pay_order_id) {
-        result,
-        message
+query paynlGetPaymentMethods {
+    paynlGetPaymentMethods {
+        methods {
+            name
+            title
+            profileid
+            brandid
+        }
     }
 }
 Query;
-$variables = ["pay_order_id" => "1234567890abcdefg"];
 
-$data = json_encode(['query' => $query, 'variables' => $variables]);
+$data = json_encode(['query' => $query]);
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $urlGraphql);
@@ -40,5 +43,5 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 $result = curl_exec($ch);
 
 if ($result !== false) {
-    print_r(json_decode($result, true));
+    showcontent(json_decode($result, true));
 }
