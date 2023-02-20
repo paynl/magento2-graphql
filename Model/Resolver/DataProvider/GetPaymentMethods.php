@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Paynl\Graphql\Model\Resolver\DataProvider;
 
+use Magento\Framework\App\CacheInterface;
 use Magento\Payment\Helper\Data as PaymentHelper;
 use Paynl\Graphql\Helper\PayHelper;
 use Paynl\Payment\Model\Config;
@@ -27,13 +28,20 @@ class GetPaymentMethods
     private $paymentHelper;
 
     /**
+     * @var CacheInterface
+     */
+    private $cache;
+
+
+    /**
      * @param Config $config
      */
-    public function __construct(Config $config, PaymentHelper $paymentHelper, Store $store)
+    public function __construct(Config $config, PaymentHelper $paymentHelper, Store $store, CacheInterface $cache)
     {
         $this->config = $config;
         $this->paymentHelper = $paymentHelper;
         $this->store = $store;
+        $this->cache = $cache;
     }
 
     /**
@@ -66,20 +74,11 @@ class GetPaymentMethods
     }
 
     /**
-     * @return mixed
-     */
-    private function getCache()
-    {
-        $om = \Magento\Framework\App\ObjectManager::getInstance();
-        return $om->get(\Magento\Framework\App\CacheInterface::class);
-    }
-
-    /**
      * @return array|mixed
      */
     private function getIssuers()
     {
-        $cache = $this->getCache();
+        $cache = $this->cache;
         $storeId = $this->store->getId();
         $cacheName = 'paynl_banks_graphql_' . $storeId;
 
