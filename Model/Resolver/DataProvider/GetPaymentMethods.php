@@ -45,6 +45,7 @@ class GetPaymentMethods
 
         $activeMethods = [];
         $excludes[] = 'paynl_payment_paylink';
+        $issuers = $this->getIssuers();
 
         foreach ($paymentMethodList as $methodCode => $value) {
             if (strpos($methodCode, 'paynl_') !== false && !in_array($methodCode, $excludes)) {
@@ -54,13 +55,46 @@ class GetPaymentMethods
                         'name' => $methodCode,
                         'title' => $value['title'] ?? '',
                         'profileid' => $this->store->getConfig('payment/' . $methodCode . '/payment_option_id'),
-                        'brandid' => $this->config->brands[$methodCode] ?? '-1'
+                        'brandid' => $this->config->brands[$methodCode] ?? '-1',
+                        'issuers' => ($methodCode == 'paynl_payment_ideal') ? $issuers : []
                     ];
                 }
             }
         }
 
         return ['methods' => $activeMethods];
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getCache()
+    {
+        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        return $om->get(\Magento\Framework\App\CacheInterface::class);
+    }
+
+    /**
+     * @return array|mixed
+     */
+    private function getIssuers()
+    {
+        $cache = $this->getCache();
+        $storeId = $this->store->getId();
+        $cacheName = 'paynl_banks_graphql_' . $storeId;
+
+        $banksJson = $cache->load($cacheName);
+
+        if (!empty($banksJson)) {
+            $issuers = json_decode($banksJson, true);
+        } else {
+            $this->config->setStore($this->store);
+            $this->config->configureSDK();
+            $issuers = \Paynl\Paymentmethods::getBanks();
+            $cache->save(json_encode($issuers), $cacheName);
+        }
+
+        return $issuers;
     }
 
 }
