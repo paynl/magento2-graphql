@@ -80,7 +80,6 @@ type Issuer {
     id: String
     name: String
     visibleName: String
-    image: String
 }
 
 type amountArr {

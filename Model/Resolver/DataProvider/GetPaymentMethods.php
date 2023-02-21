@@ -93,7 +93,13 @@ class GetPaymentMethods
             $cache->save(json_encode($issuers), $cacheName);
         }
 
-        return $issuers;
+        $new_issuers = [];
+        foreach ($issuers as $issuer) {
+            unset($issuer['image']);
+            $new_issuers[] = $issuer;
+        }
+
+        return $new_issuers;
     }
 
 }
