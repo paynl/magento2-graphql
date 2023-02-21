@@ -26,6 +26,11 @@ query paynlGetPaymentMethods {
             title
             profileid
             brandid
+            issuers {
+                id
+                name
+                visibleName
+            }
         }
     }
 }
