@@ -13,7 +13,8 @@ $headers[] = 'Content-Type: application/json';
 try {
     $magentoAuthorizationToken = getAdminToken();
 } catch (Exception $exception) {
-    showcontent('Exception: ' . $exception);
+    echo $exception->getMessage();
+    exit();
 }
 
 $headers[] = 'Authorization: Bearer ' . $magentoAuthorizationToken;
@@ -48,5 +49,5 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 $result = curl_exec($ch);
 
 if ($result !== false) {
-    showcontent(json_decode($result, true));
+    print_r(json_decode($result, true));
 }
