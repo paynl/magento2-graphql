@@ -86,3 +86,11 @@ type amountArr {
     value  : String @doc(description: "The amount in cents")
     currency  : String @doc(description: "The currency used to pay")
 }
+
+type Order {  
+    pay_redirect_url: String @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\PlaceOrderPay") @doc(description: "The url to redirect to the PAY. checkout")
+}
+
+input PlaceOrderInput {
+    pay_return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
+}
