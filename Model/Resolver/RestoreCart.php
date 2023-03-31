@@ -42,7 +42,7 @@ class RestoreCart implements ResolverInterface
      * @param ResolveInfo info
      * @param array value
      * @param array args
-     * @return null
+     * @return boolean
      * @throws GraphQlAuthorizationException
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
@@ -66,6 +66,6 @@ class RestoreCart implements ResolverInterface
         $cart->setIsActive(1);
         $this->cartRepository->save($cart);
 
-        return ['cart' => ['model' => $cart]];
+        return true;
     }
 }

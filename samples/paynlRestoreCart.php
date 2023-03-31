@@ -11,11 +11,7 @@ $headers[] = 'Content-Type: application/json';
 
 $query = <<<Query
 mutation paynlRestoreCart(\$cart_id: String!) {
-    paynlRestoreCart(cart_id: \$cart_id) {
-        cart {
-            email          
-        }
-    }
+    paynlRestoreCart(cart_id: \$cart_id) 
 }
 Query;
 $variables = ["cart_id" => "1234567890abcdefghijk"];
