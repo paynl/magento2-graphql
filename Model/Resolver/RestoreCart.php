@@ -37,7 +37,13 @@ class RestoreCart implements ResolverInterface
     }
 
     /**
-     * @inheritdoc
+     * @param Field $field
+     * @param object $context
+     * @param ResolveInfo info
+     * @param array value
+     * @param array args
+     * @return null
+     * @throws GraphQlAuthorizationException
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
@@ -45,39 +51,21 @@ class RestoreCart implements ResolverInterface
             throw new GraphQlInputException(__('Required parameter "cart_id" is missing'));
         }
 
-        $maskedCartId = $args['cart_id'];
-
-        $cartId = $this->maskedQuoteIdToQuoteId->execute($maskedCartId);
+        $cartId = $this->maskedQuoteIdToQuoteId->execute($args['cart_id']);
         $cart = $this->cartRepository->get($cartId);
 
-        $this->checkCartCustomerId($cart, $context->getUserId(), $maskedCartId);
+        if ((int)$cart->getCustomerId() !== $context->getUserId()) {
+            throw new GraphQlAuthorizationException(
+                __(
+                    'The current user cannot perform operations on cart "%cart_id"',
+                    ['cart_id' => $args['cart_id']]
+                )
+            );
+        }
 
         $cart->setIsActive(1);
         $this->cartRepository->save($cart);
 
         return ['cart' => ['model' => $cart]];
-    }
-
-    /**
-     * @param Cart $cart
-     * @param int $customerId
-     * @param string maskedCartId
-     * @return null
-     * @throws GraphQlAuthorizationException
-     */
-    private function checkCartCustomerId($cart, $customerId, $maskedCartId)
-    {
-        $cartCustomerId = (int) $cart->getCustomerId();
-        if ($cartCustomerId === 0) {
-            return;
-        }
-        if ($cartCustomerId !== $customerId) {
-            throw new GraphQlAuthorizationException(
-                __(
-                    'The current user cannot perform operations on cart "%masked_cart_id"',
-                    ['masked_cart_id' => $maskedCartId]
-                )
-            );
-        }
     }
 }
