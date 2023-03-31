@@ -78,6 +78,8 @@ They are explained below.
 # Mutations
 
 - **paynlStartTransaction**</br>
+  <mark>This function is deprecated, but remains available to keep the old way of starting a transaction through GrapQL working</br>
+  For the new way please use Magento's PlaceOrder Mutation.</mark></br>
   Start a transaction based on the Magento2 order-ID. This will return a URL with the PAY. transaction.<br/>
   This mutation expects `order_id` and optionally `return_url`. It will return type [#PaynlStartTransactionOutput](#paynlstarttransactionoutput)
 

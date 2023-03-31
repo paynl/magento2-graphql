@@ -56,7 +56,7 @@ class StartTransaction
      * @return array
      * @throws GraphQlInputException
      */
-    public function startTransactionUrl($order, $returnUrl)
+    private function startTransactionUrl($order, $returnUrl)
     {
         $redirectUrl = '';
         # Check if order has already been (partially) Paid.
@@ -84,6 +84,9 @@ class StartTransaction
     }
 
     /**
+     * This function is deprecated, but remains available to keep the old way of starting a transaction through GrapQL working
+     * For the new way please use Magento's PlaceOrder Mutation.
+     * 
      * @param array $options
      * @return array
      * @throws GraphQlInputException
