@@ -54,7 +54,7 @@ class GetMethodVars
         $methodInstance = $this->paymentHelper->getMethodInstance($method);
         if ($methodInstance instanceof Paymentmethod) {
             if (method_exists($methodInstance, 'getPaymentOptions')) {
-                $issuers = $methodInstance->getPaymentOptions();
+                $issuers = $methodInstance->getPaymentOptions(true);
                 if (!empty($issuers)) {
                     return $issuers;
                 }
