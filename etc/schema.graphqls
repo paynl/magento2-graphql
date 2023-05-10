@@ -34,6 +34,10 @@ type Mutation {
             magento_order_id: String! @doc(description: "The Order Id of the magento2 order, not to be confused with order number")
             return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
     ) : PaynlPayLinkOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\GetPayLink") @doc(description: "Initialize the paylink transaction.")
+
+    paynlRestoreCart (
+            cart_id: String! @doc(description: "The cart Id of the magento2 order")
+    ) : Boolean @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\RestoreCart") @doc(description: "Restore the cart.")
 }
 
 type PaynlStartTransactionOutput {

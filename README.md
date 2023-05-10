@@ -108,6 +108,11 @@ This mutation expects the `pay_order_id`. It will return [#PaynlResultOutput](#p
 The paynlGetPayLink mutation starts a transaction based on the Magento2 order_id an creates a paylink, this will return a url with the PAY. paylink.<br/>
 This mutation expects `order_id` and optionally `return_url`. It will return [#PaynlPayLinkOutput](#paynlstarttransactionoutput)
 
+## paynlRestoreCart
+
+The paynlRestoreCart mutation restores a cart that has been made inactive after an order gets placed.<br/>
+This mutation expects `cart_id` It will return [#PaynlRestoreCartOutput](#paynlrestorecartoutput)
+
 # Types
 
 - **paynlGetTransactionOutput**
@@ -170,6 +175,13 @@ This mutation expects `order_id` and optionally `return_url`. It will return [#P
 | ----------- | ------  | ---------------------------------------- |
 | result      | Boolean | The result of the action.                |
 | message     | String  | The message output from PAY.             |
+
+## PaynlRestoreCartOutput
+
+| Variable    | Type    | Description                              |
+| ----------- | ------  | ---------------------------------------- |
+| cart        | Cart    | The cart object                          |
+
 
 # Support
 
