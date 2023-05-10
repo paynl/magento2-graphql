@@ -116,6 +116,11 @@ The PlaceOrder mutation is magento2's own graphql mutation that places an order.
 If the cart has a Pay. payment method added to it, this will return a URL with the Pay. transaction.<br/>
 This mutation expects `cart_id` and optionally `pay_return_url`. It will return type [#order](#order)
 
+## paynlRestoreCart
+
+The paynlRestoreCart mutation restores a cart that has been made inactive after an order gets placed.<br/>
+This mutation expects `cart_id` It will return [#PaynlRestoreCartOutput](#paynlrestorecartoutput)
+
 # Types
 
 - **paynlGetTransactionOutput**
@@ -185,6 +190,12 @@ This mutation expects `cart_id` and optionally `pay_return_url`. It will return 
 | -----------      | ------ | ---------------------------------------- |
 | order_number     | String | The Magento2 order number                |
 | pay_redirect_url | String | The PAY. payment URL                     |
+
+## PaynlRestoreCartOutput
+
+| Variable    | Type    | Description                              |
+| ----------- | ------  | ---------------------------------------- |
+| cart        | Cart    | The cart object                          |
 
 # Support
 

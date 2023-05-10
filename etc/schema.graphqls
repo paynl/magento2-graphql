@@ -34,6 +34,10 @@ type Mutation {
             magento_order_id: String! @doc(description: "The Order Id of the magento2 order, not to be confused with order number")
             return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
     ) : PaynlPayLinkOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\GetPayLink") @doc(description: "Initialize the paylink transaction.")
+
+    paynlRestoreCart (
+            cart_id: String! @doc(description: "The cart Id of the magento2 order")
+    ) : Boolean @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\RestoreCart") @doc(description: "Restore the cart.")
 }
 
 type PaynlStartTransactionOutput {
@@ -73,13 +77,29 @@ type PayMethod {
     title: String
     profileid: Int
     brandid: Int
-    issuers: [Issuer]
+    issuers: [PayIssuer]
 }
 
-type Issuer {
+type Cart {
+    logo: String @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\LogoForMethod") @doc(description: "Logo for the selected payment method")
+    pay_issuers: [PayIssuer] @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\IssuersForMethod") @doc(description: "Issuers available for the selected payment method")
+}
+
+type AvailablePaymentMethod {
+    logo: String @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\LogoForMethod") @doc(description: "Logo for the selected payment method")
+    pay_issuers: [PayIssuer] @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\IssuersForMethod") @doc(description: "Issuers available for the selected payment method")
+}
+
+type PaymentMethod {
+    logo: String @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\LogoForMethod") @doc(description: "Logo for the selected payment method")
+    pay_issuers: [PayIssuer] @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\IssuersForMethod") @doc(description: "Issuers available for the selected payment method")
+}
+
+type PayIssuer {
     id: String
     name: String
     visibleName: String
+    logo: String
 }
 
 type amountArr {
