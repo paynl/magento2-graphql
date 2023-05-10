@@ -106,3 +106,7 @@ type amountArr {
     value  : String @doc(description: "The amount in cents")
     currency  : String @doc(description: "The currency used to pay")
 }
+
+input PaymentMethodInput {
+    pay_issuer: String @doc(description: "Id of the issuer")
+}
