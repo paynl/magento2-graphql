@@ -78,7 +78,7 @@ class StartTransaction
             if (method_exists($methodInstance, 'setGraphqlVersion')) {
                 $methodInstance->setGraphqlVersion(PayHelper::getVersion());
             }
-            $redirectUrl = $methodInstance->StartTransaction($order);
+            $redirectUrl = $methodInstance->startTransaction($order);
         }
         return $redirectUrl;
     }
