@@ -81,29 +81,7 @@ class StartTransaction
             $redirectUrl = $methodInstance->startTransaction($order);
         }
         return $redirectUrl;
-    }
-
-    /**
-     * This function is deprecated, but remains available to keep the old way of starting a transaction through GrapQL working
-     * For the new way please use Magento's PlaceOrder Mutation.
-     * 
-     * @param array $options
-     * @return array
-     * @throws GraphQlInputException
-     */
-    public function startTransaction($options)
-    {
-        $order = $this->orderRepository->get($options['magento_order_id']);
-
-        $quote = $this->quoteRepository->get($order->getQuoteId());
-        $quote->setIsActive(true);
-        $this->quoteRepository->save($quote);
-
-        $returnUrl = (!empty($options['return_url'])) ? $options['return_url'] : '';
-        $redirectUrl = $this->startTransactionUrl($order, $returnUrl);
-
-        return ['redirectUrl' => $redirectUrl];
-    }
+    }    
 
     /**
      * @param string $orderId

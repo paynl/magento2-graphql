@@ -7,15 +7,6 @@ type Query {
 
 type Mutation {
 
-    paynlStartTransaction (
-            magento_order_id: String! @doc(description: "The order_number of the Magento order")
-            return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
-    ) : PaynlStartTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\StartTransaction") @doc(description: "Initialize the transaction.")
-
-    paynlFinishTransaction (
-            pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento. Executing this mutation closes the Magento2 quote if the transaction is marked as successfull")
-    ) : paynlGetTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\FinishTransaction") @doc(description: "Initialize the transaction.")
-
     paynlRefundTransaction (
             pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
             amount: String @doc(description: "The amount you wish to refund.")
@@ -38,10 +29,6 @@ type Mutation {
     paynlRestoreCart (
             cart_id: String! @doc(description: "The cart Id of the magento2 order")
     ) : Boolean @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\RestoreCart") @doc(description: "Restore the cart.")
-}
-
-type PaynlStartTransactionOutput {
-    redirectUrl  : String  @doc(description: "The url to redirect to the PAY. checkout")
 }
 
 type PaynlPayLinkOutput {
