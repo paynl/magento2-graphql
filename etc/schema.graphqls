@@ -77,13 +77,29 @@ type PayMethod {
     title: String
     profileid: Int
     brandid: Int
-    issuers: [Issuer]
+    issuers: [PayIssuer]
 }
 
-type Issuer {
+type Cart {
+    logo: String @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\LogoForMethod") @doc(description: "Logo for the selected payment method")
+    pay_issuers: [PayIssuer] @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\IssuersForMethod") @doc(description: "Issuers available for the selected payment method")
+}
+
+type AvailablePaymentMethod {
+    logo: String @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\LogoForMethod") @doc(description: "Logo for the selected payment method")
+    pay_issuers: [PayIssuer] @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\IssuersForMethod") @doc(description: "Issuers available for the selected payment method")
+}
+
+type PaymentMethod {
+    logo: String @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\LogoForMethod") @doc(description: "Logo for the selected payment method")
+    pay_issuers: [PayIssuer] @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\IssuersForMethod") @doc(description: "Issuers available for the selected payment method")
+}
+
+type PayIssuer {
     id: String
     name: String
     visibleName: String
+    logo: String
 }
 
 type amountArr {
