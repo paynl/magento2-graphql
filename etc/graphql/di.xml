@@ -3,4 +3,7 @@
     <type name="Magento\QuoteGraphQl\Model\Resolver\PlaceOrder">
         <plugin name="pay_place_order_return_url" type="Paynl\Graphql\Model\Resolver\PlaceOrderPay" />
     </type>
+    <type name="Magento\QuoteGraphQl\Model\Cart\SetPaymentMethodOnCart">
+        <plugin name="pay_set_issuer" type="Paynl\Graphql\Plugin\SetPaymentIssuer" />
+    </type>
 </config>

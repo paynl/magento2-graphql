@@ -114,3 +114,7 @@ type Order {
 input PlaceOrderInput {
     pay_return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
 }
+
+input PaymentMethodInput {
+    pay_issuer: String @doc(description: "Id of the issuer")
+}
