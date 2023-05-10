@@ -78,6 +78,8 @@ They are explained below.
 # Mutations
 
 - **paynlStartTransaction**</br>
+  <mark>This function is deprecated, but remains available to keep the old way of starting a transaction through GrapQL working</br>
+  For the new way please use Magento's PlaceOrder Mutation.</mark></br>
   Start a transaction based on the Magento2 order-ID. This will return a URL with the PAY. transaction.<br/>
   This mutation expects `order_id` and optionally `return_url`. It will return type [#PaynlStartTransactionOutput](#paynlstarttransactionoutput)
 
@@ -107,6 +109,12 @@ This mutation expects the `pay_order_id`. It will return [#PaynlResultOutput](#p
 
 The paynlGetPayLink mutation starts a transaction based on the Magento2 order_id an creates a paylink, this will return a url with the PAY. paylink.<br/>
 This mutation expects `order_id` and optionally `return_url`. It will return [#PaynlPayLinkOutput](#paynlstarttransactionoutput)
+
+## PlaceOrder
+
+The PlaceOrder mutation is magento2's own graphql mutation that places an order. <br/>
+If the cart has a Pay. payment method added to it, this will return a URL with the Pay. transaction.<br/>
+This mutation expects `cart_id` and optionally `pay_return_url`. It will return type [#order](#order)
 
 ## paynlRestoreCart
 
@@ -176,12 +184,18 @@ This mutation expects `cart_id` It will return [#PaynlRestoreCartOutput](#paynlr
 | result      | Boolean | The result of the action.                |
 | message     | String  | The message output from PAY.             |
 
+## Order
+
+| Variable         | Type   | Description                              |
+| -----------      | ------ | ---------------------------------------- |
+| order_number     | String | The Magento2 order number                |
+| pay_redirect_url | String | The PAY. payment URL                     |
+
 ## PaynlRestoreCartOutput
 
 | Variable    | Type    | Description                              |
 | ----------- | ------  | ---------------------------------------- |
 | cart        | Cart    | The cart object                          |
-
 
 # Support
 
