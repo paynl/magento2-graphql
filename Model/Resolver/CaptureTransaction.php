@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Paynl\Graphql\Model\Resolver;
 
+use Magento\Framework\AuthorizationInterface;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
@@ -20,9 +21,10 @@ class CaptureTransaction implements ResolverInterface
     /**
      * @param DataProvider\CaptureTransaction $captureTransactionDataProvider
      */
-    public function __construct(DataProvider\CaptureTransaction $captureTransactionDataProvider)
+    public function __construct(DataProvider\CaptureTransaction $captureTransactionDataProvider,AuthorizationInterface $authorization)
     {
         $this->captureTransactionDataProvider = $captureTransactionDataProvider;
+        $this->authorization = $authorization;
     }
 
     /**
