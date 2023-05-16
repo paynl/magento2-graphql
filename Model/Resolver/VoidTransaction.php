@@ -18,11 +18,17 @@ class VoidTransaction implements ResolverInterface
     private $voidTransactionDataProvider;
 
     /**
+     * @var AuthorizationInterface
+     */
+    private $authorization;
+
+    /**
      * @param DataProvider\VoidTransaction $voidTransactionDataProvider
      */
-    public function __construct(DataProvider\VoidTransaction $voidTransactionDataProvider)
+    public function __construct(DataProvider\VoidTransaction $voidTransactionDataProvider, AuthorizationInterface $authorization)
     {
         $this->voidTransactionDataProvider = $voidTransactionDataProvider;
+        $this->authorization = $authorization;
     }
 
     /**

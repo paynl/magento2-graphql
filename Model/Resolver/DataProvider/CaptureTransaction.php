@@ -1,10 +1,13 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Paynl\Graphql\Model\Resolver\DataProvider;
 
+use Magento\Sales\Api\Data\OrderInterface;
 use Paynl\Payment\Model\Config;
+use Paynl\Payment\Model\PayPayment;
+use Paynl\Result\Transaction\Transaction;
 use \Exception;
 
 class CaptureTransaction
@@ -15,12 +18,28 @@ class CaptureTransaction
     private $config;
 
     /**
+     * @var OrderInterface
+     */
+    private $order;
+
+    /**
+     * @var PayPayment
+     */
+    private $payPayment;
+
+    /**
      * @param Config $config
+     * @param OrderInterface $order
+     * @param PayPayment $payPayment
      */
     public function __construct(
-        Config $config
+        Config $config,
+        OrderInterface $order,
+        PayPayment $payPayment
     ) {
         $this->config = $config;
+        $this->order = $order;
+        $this->payPayment = $payPayment;
     }
 
     /**
@@ -29,15 +48,27 @@ class CaptureTransaction
      */
     public function CaptureTransaction($options)
     {
+
         $result = false;
+        $bCaptureResult = false;
         try {
             $this->config->configureSDK();
-            $capture = \Paynl\Transaction::capture($options['pay_order_id'], ($options['amount'] ?? null));
-            if ($capture === true) {
+            $bCaptureResult = \Paynl\Transaction::capture($options['pay_order_id'], null);
+            if ($bCaptureResult === true) {
                 $message = 'PAY. has successfully captured the transaction.';
-                $result = $capture;
+                $result = $bCaptureResult;
             } else {
                 $message = 'PAY. could not process this capture.';
+            }
+
+            if ($this->config->autoCaptureEnabled()) {
+                $order = $this->order->load($options['order_id']);
+                $order->addStatusHistoryComment(__('PAY. - Performed graphQL-capture. Result: ') . ($bCaptureResult ? 'Success' : 'Failed'))->save();
+                # Whether capture failed or succeeded, we still might have to process paid order
+                $transaction = \Paynl\Transaction::get($options['pay_order_id']);
+                if ($transaction->isPaid()) {
+                    $this->payPayment->processPaidOrder($transaction, $order);
+                }
             }
         } catch (\Exception $e) {
             $message = strtolower($e->getMessage());
