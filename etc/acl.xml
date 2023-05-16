@@ -4,9 +4,9 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Paynl_Payment::acl" title="Pay." sortOrder="1">        
-                    <resource id="Paynl_Payment::graphql_refund" title="GraphQl - Refund" sortOrder="3" />
-                    <resource id="Paynl_Payment::graphql_capture" title="GraphQl - Capture" sortOrder="4" />
-                    <resource id="Paynl_Payment::graphql_void" title="GraphQl - Void" sortOrder="5" />
+                    <resource id="Paynl_Payment::graphql_refund" title="GraphQL - Refund" sortOrder="3" />
+                    <resource id="Paynl_Payment::graphql_capture" title="GraphQL - Capture" sortOrder="4" />
+                    <resource id="Paynl_Payment::graphql_void" title="GraphQL - Void" sortOrder="5" />
                 </resource>
             </resource>
         </resources>
