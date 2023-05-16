@@ -16,8 +16,8 @@ This module adds GraphQL functionality for the [PAY. Magento2 plugin](https://gi
 # Requirements
 
     PHP 7.2 or higher
-    PAY. Magento2 plugin 2.4.0 or higher
-    Tested up to Magento 2.4.3
+    PAY. Magento2 plugin 3.5.2 or higher
+    Tested up to Magento 2.4.6
 
 # Installation
 
