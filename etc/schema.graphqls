@@ -14,7 +14,7 @@ type Mutation {
 
     paynlCaptureTransaction (
             pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
-            order_id: String! @doc(description: "The order id provided by Magento2")
+            order_number: String! @doc(description: "The order number provided by Magento2")
     ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\CaptureTransaction") @doc(description: "Initialize the capture.")
 
     paynlVoidTransaction (

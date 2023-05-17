@@ -5,6 +5,8 @@ declare (strict_types = 1);
 namespace Paynl\Graphql\Model\Resolver\DataProvider;
 
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Spi\OrderResourceInterface;
+use Magento\Sales\Api\Data\OrderInterfaceFactory;
 use Paynl\Payment\Model\Config;
 use Paynl\Payment\Model\PayPayment;
 use Paynl\Result\Transaction\Transaction;
@@ -18,9 +20,14 @@ class CaptureTransaction
     private $config;
 
     /**
-     * @var OrderInterface
+     * @var OrderResourceInterface
      */
-    private $order;
+    private $orderResource;
+
+    /**
+     * @var OrderInterfaceFactory
+     */
+    private $orderFactory;
 
     /**
      * @var PayPayment
@@ -29,16 +36,19 @@ class CaptureTransaction
 
     /**
      * @param Config $config
-     * @param OrderInterface $order
+     * @param OrderResourceInterface $orderResource
+     * @param OrderInterfaceFactory $orderFactory
      * @param PayPayment $payPayment
      */
     public function __construct(
         Config $config,
-        OrderInterface $order,
+        OrderResourceInterface $orderResource,
+        OrderInterfaceFactory $orderFactory,
         PayPayment $payPayment
     ) {
         $this->config = $config;
-        $this->order = $order;
+        $this->orderResource = $orderResource;
+        $this->orderFactory = $orderFactory;
         $this->payPayment = $payPayment;
     }
 
@@ -62,7 +72,8 @@ class CaptureTransaction
             }
 
             if ($this->config->autoCaptureEnabled()) {
-                $order = $this->order->load($options['order_id']);
+                $order = $this->orderFactory->create();
+                $this->orderResource->load($order, $options['order_number'], OrderInterface::INCREMENT_ID);
                 $order->addStatusHistoryComment(__('PAY. - Performed graphQL-capture. Result: ') . ($bCaptureResult ? 'Success' : 'Failed'))->save();
                 # Whether capture failed or succeeded, we still might have to process paid order
                 $transaction = \Paynl\Transaction::get($options['pay_order_id']);
