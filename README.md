@@ -1,7 +1,7 @@
 <p align="center">
     <img src="https://www.pay.nl/uploads/1/brands/main_logo.png" />
 </p>
-<h1 align="center">PAY. GraphQL Extension for Magento 2</h1>
+<h1 align="center">PAY. GraphQL Extension for Magento</h1>
 
 # Description
 
@@ -21,7 +21,7 @@ This module adds GraphQL functionality for the [PAY. Magento2 plugin](https://gi
 
 # Installation
 
-On your server's command line, navigate to the installation directory of Magento2 and enter the following commands:
+On your server's command line, navigate to the installation directory of Magento and enter the following commands:
 
 ```
 composer require paynl/magento2-graphql
