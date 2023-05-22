@@ -4,20 +4,25 @@ declare(strict_types=1);
 
 namespace Paynl\Graphql\Model\Resolver;
 
+use Magento\QuoteGraphQl\Model\Resolver\PlaceOrder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
-use Paynl\Graphql\Model\CheckToken;
 
-class StartTransaction implements ResolverInterface
+class PlaceOrderPay implements ResolverInterface
 {
     /**
      * @var DataProvider\StartTransaction
      */
     private $startTransactionDataProvider;
+
+    /**
+     * @var string
+     */
+    public $returnUrl = '';
 
     /**
      * @param DataProvider\StartTransaction $startTransactionDataProvider
@@ -30,9 +35,24 @@ class StartTransaction implements ResolverInterface
     /**
      * @inheritdoc
      */
+    public function beforeResolve(
+        PlaceOrder $subject,
+        $field,
+        $context,
+        $info,
+        array $value = null,
+        array $args = null
+    ) {
+        if (isset($args['input']['pay_return_url'])) {
+            $this->returnUrl = $args['input']['pay_return_url'];            
+        }
+    }  
+   
+    /**
+     * @inheritdoc
+     */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
-    {
-        CheckToken::validate($context);
-        return $this->startTransactionDataProvider->startTransaction($args);
+    {               
+        return $this->startTransactionDataProvider->placeOrder($value['order_number'], $this->returnUrl);
     }
 }

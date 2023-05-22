@@ -1,15 +1,17 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Paynl\Graphql\Model\Resolver\DataProvider;
 
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Payment\Helper\Data as PaymentHelper;
 use Magento\Quote\Model\QuoteRepository;
+use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\OrderRepository;
 use Paynl\Graphql\Helper\PayHelper;
 use Paynl\Payment\Model\Paymentmethod\Paymentmethod;
-use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 
 class StartTransaction
 {
@@ -25,30 +27,38 @@ class StartTransaction
      * @var PaymentHelper
      */
     private $paymentHelper;
+    /**
+     * @var OrderRepositoryInterface
+     */
+    private $orderRepositoryInterface;
+    /**
+     * @var searchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
 
     /**
      * @param QuoteRepository $quoteRepository
      * @param OrderRepository $orderRepository
      * @param PaymentHelper $paymentHelper
      */
-    public function __construct(QuoteRepository $quoteRepository, OrderRepository $orderRepository, PaymentHelper $paymentHelper)
+    public function __construct(QuoteRepository $quoteRepository, OrderRepository $orderRepository, PaymentHelper $paymentHelper, OrderRepositoryInterface $orderRepositoryInterface, SearchCriteriaBuilder $searchCriteriaBuilder)
     {
         $this->quoteRepository = $quoteRepository;
         $this->paymentHelper = $paymentHelper;
         $this->orderRepository = $orderRepository;
+        $this->orderRepositoryInterface = $orderRepositoryInterface;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
     /**
-     * @param array $options
+     * @param order $order
+     * @param string $returnUrl
      * @return array
      * @throws GraphQlInputException
      */
-    public function startTransaction($options)
+    private function startTransactionUrl($order, $returnUrl)
     {
         $redirectUrl = '';
-
-        $order = $this->orderRepository->get($options['magento_order_id']);
-
         # Check if order has already been (partially) Paid.
         $orderTotal = round(floatval($order->getBaseGrandTotal()), 2);
         $orderDue = round(floatval($order->getBaseTotalDue()), 2);
@@ -58,13 +68,9 @@ class StartTransaction
             throw new GraphQlInputException(__('Order has already been partially paid.'));
         }
 
-        $quote = $this->quoteRepository->get($order->getQuoteId());
-        $quote->setIsActive(true);
-        $this->quoteRepository->save($quote);
-
         $payment = $order->getPayment();
-        if (!empty($options['return_url'])) {
-            $payment->setAdditionalInformation('returnUrl', $options['return_url']);
+        if (!empty($returnUrl)) {
+            $payment->setAdditionalInformation('returnUrl', $returnUrl);
         }
 
         $methodInstance = $this->paymentHelper->getMethodInstance($payment->getMethod());
@@ -74,7 +80,39 @@ class StartTransaction
             }
             $redirectUrl = $methodInstance->startTransaction($order);
         }
+        return $redirectUrl;
+    }    
 
-        return ['redirectUrl' => $redirectUrl];
+    /**
+     * @param string $orderId
+     * @param string $returnUrl
+     * @return array
+     * @throws GraphQlInputException
+     */
+    public function placeOrder($orderId, $returnUrl)
+    {
+        $order = $this->getOrderByIncrementId($orderId);
+        $redirectUrl = $this->startTransactionUrl($order, $returnUrl);
+        return $redirectUrl;
+    }
+
+    /**
+     * Get order by increment id.
+     * @param string $incrementId
+     * @return OrderInterface|null Returns resulting order, null if not found.
+     */
+    private function getOrderByIncrementId($incrementId)
+    {
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('increment_id', $incrementId)
+            ->create();
+
+        $orderList = $this->orderRepositoryInterface->getList($searchCriteria)->getItems();
+
+        if (empty($orderList)) {
+            return null;
+        }
+
+        return array_values($orderList)[0];
     }
 }

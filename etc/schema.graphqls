@@ -1,52 +1,32 @@
 type Query {
-
-    paynlGetTransaction(pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento.")):
-                            paynlGetTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\GetTransaction") @doc(description: "Get the status of the transaction")
-    paynlGetPaymentMethods: paynlPaymentMethodsOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\GetPaymentMethods") @doc(description: "Get the available Pay. payment methods")
+    paynlGetTransaction (
+            pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento.")
+    ): paynlGetTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\GetTransaction") @doc(description: "Get the status of the transaction")
 }
 
 type Mutation {
-
-    paynlStartTransaction (
-            magento_order_id: String! @doc(description: "The order_number of the Magento order")
-            return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
-    ) : PaynlStartTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\StartTransaction") @doc(description: "Initialize the transaction.")
-
-    paynlFinishTransaction (
-            pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento. Executing this mutation closes the Magento2 quote if the transaction is marked as successfull")
-    ) : paynlGetTransactionOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\FinishTransaction") @doc(description: "Initialize the transaction.")
-
     paynlRefundTransaction (
-            pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
+            pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento.")
             amount: String @doc(description: "The amount you wish to refund.")
     ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\RefundTransaction") @doc(description: "Initialize the refund.")
 
     paynlCaptureTransaction (
-            pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
-            amount: String @doc(description: "The amount you wish to capture.")
+            pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento.")
+            order_number: String! @doc(description: "The order number provided by Magento")
     ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\CaptureTransaction") @doc(description: "Initialize the capture.")
 
     paynlVoidTransaction (
-            pay_order_id: String! @doc(description: "The order id provided by PAY. This is not the same as the order id in Magento.")
+            pay_order_id: String! @doc(description: "The order id provided by Pay. This is not the same as the order id in Magento.")
     ) : PaynlResultOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\VoidTransaction") @doc(description: "Initialize the void.")
 
-    paynlGetPayLink (
-            magento_order_id: String! @doc(description: "The Order Id of the magento2 order, not to be confused with order number")
-            return_url: String @doc(description: "Url to send the customer to once the payment has finished.")
-    ) : PaynlPayLinkOutput @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\GetPayLink") @doc(description: "Initialize the paylink transaction.")
-}
-
-type PaynlStartTransactionOutput {
-    redirectUrl  : String  @doc(description: "The url to redirect to the PAY. checkout")
-}
-
-type PaynlPayLinkOutput {
-    paylink  : String  @doc(description: "The url to redirect to the PAY. paylink")
+    paynlRestoreCart (
+            cart_id: String! @doc(description: "The cart Id of the Magento order")
+    ) : Boolean @resolver( class: "Paynl\\Graphql\\Model\\Resolver\\RestoreCart") @doc(description: "Restore the cart.")
 }
 
 type PaynlResultOutput {
     result   : Boolean @doc(description: "The result of the action")
-    message  : String  @doc(description: "The message output from PAY.")
+    message  : String  @doc(description: "The message output from Pay.")
 }
 
 type paynlGetTransactionOutput {
@@ -64,25 +44,41 @@ type paynlGetTransactionOutput {
     isSuccess  : Boolean  @doc(description: "Was the payment successfull")
 }
 
-type paynlPaymentMethodsOutput {
-    methods: [PayMethod]
+type Cart {
+    logo: String @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\LogoForMethod") @doc(description: "Logo for the selected payment method")
+    pay_issuers: [PayIssuer] @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\IssuersForMethod") @doc(description: "Issuers available for the selected payment method")
 }
 
-type PayMethod {
-    name: String
-    title: String
-    profileid: Int
-    brandid: Int
-    issuers: [Issuer]
+type AvailablePaymentMethod {
+    logo: String @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\LogoForMethod") @doc(description: "Logo for the selected payment method")
+    pay_issuers: [PayIssuer] @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\IssuersForMethod") @doc(description: "Issuers available for the selected payment method")
 }
 
-type Issuer {
+type PaymentMethod {
+    logo: String @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\LogoForMethod") @doc(description: "Logo for the selected payment method")
+    pay_issuers: [PayIssuer] @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\IssuersForMethod") @doc(description: "Issuers available for the selected payment method")
+}
+
+type PayIssuer {
     id: String
     name: String
     visibleName: String
+    logo: String
 }
 
 type amountArr {
     value  : String @doc(description: "The amount in cents")
     currency  : String @doc(description: "The currency used to pay")
+}
+
+type Order {
+    pay_redirect_url: String @resolver(class: "\\Paynl\\Graphql\\Model\\Resolver\\PlaceOrderPay") @doc(description: "The URL to redirect to the Pay. checkout")
+}
+
+input PlaceOrderInput {
+    pay_return_url: String @doc(description: "URL to send the customer to once the payment has finished.")
+}
+
+input PaymentMethodInput {
+    pay_issuer: String @doc(description: "Id of the issuer")
 }
