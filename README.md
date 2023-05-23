@@ -33,7 +33,7 @@ The plugin is now installed and ready for use.
 
 # Usage and Examples
 
-To see how to use the queries, please check our [GraphQL wiki](/wiki/). <br/>
+To see how to use the queries, please check our [GraphQL wiki](/../../wiki/). <br/>
 
 This GraphQL library consists of queries, mutations and some other classes.
 They are explained on the wiki.
