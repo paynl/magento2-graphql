@@ -86,7 +86,7 @@ class CaptureTransaction
             if (substr($message, 0, 19) == '403 - access denied') {
                 $message = 'PAY. could not authorize this capture. Errorcode: PAY-MAGENTO2-GRAPHQL-CAPTURE-001.';
             } else {
-                $message = 'PAY. could not process this capture (' . $message . '). Errorcode: PAY-MAGENTO2-CAPTURE-GRAPHQL-002. Transaction: ' . $options['pay_order_id'];
+                $message = 'PAY. could not process this capture (' . $message . '). Errorcode: PAY-MAGENTO2-GRAPHQL-CAPTURE-002. Transaction: ' . $options['pay_order_id'];
             }
         }
         return ['result' => $result, 'message' => $message];

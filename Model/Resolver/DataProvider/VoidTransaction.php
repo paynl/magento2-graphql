@@ -44,7 +44,7 @@ class VoidTransaction
             if (substr($message, 0, 19) == '403 - access denied') {
                 $message = 'PAY. could not authorize this void. Errorcode: PAY-MAGENTO2-GRAPHQL-VOID-001.';
             } else {
-                $message = 'PAY. could not process this void (' . $message . '). Errorcode: PAY-MAGENTO2-VOID-GRAPHQL-002. Transaction: ' . $options['pay_order_id'];
+                $message = 'PAY. could not process this void (' . $message . '). Errorcode: PAY-MAGENTO2-GRAPHQL-VOID-002. Transaction: ' . $options['pay_order_id'];
             }
         }
         return ['result' => $result, 'message' => $message];
