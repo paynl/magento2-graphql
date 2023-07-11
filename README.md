@@ -25,7 +25,11 @@ On your server's command line, navigate to the installation directory of Magento
 
 ```
 composer require paynl/magento2-graphql
+```
+```
 php bin/magento setup:upgrade
+```
+```
 php bin/magento cache:clean
 ```
 
