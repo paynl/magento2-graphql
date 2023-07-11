@@ -33,6 +33,11 @@ class PlaceOrderPay implements ResolverInterface
     }
 
     /**
+     * @var boolean
+     */
+    public $sendIncrementId  = false;
+
+    /**
      * @inheritdoc
      */
     public function beforeResolve(
@@ -45,6 +50,9 @@ class PlaceOrderPay implements ResolverInterface
     ) {
         if (isset($args['input']['pay_return_url'])) {
             $this->returnUrl = $args['input']['pay_return_url'];            
+        }
+        if (isset($args['input']['pay_send_increment_id'])) {
+            $this->sendIncrementId = $args['input']['pay_send_increment_id'];            
         }
     }  
    

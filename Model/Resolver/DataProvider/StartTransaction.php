@@ -86,11 +86,16 @@ class StartTransaction
     /**
      * @param string $orderId
      * @param string $returnUrl
+     * @param boolean $sendIncrementId
      * @return array
      * @throws GraphQlInputException
      */
-    public function placeOrder($orderId, $returnUrl)
+    public function placeOrder($orderId, $returnUrl, $sendIncrementId)
     {
+        if($sendIncrementId === true){
+            $returnUrl .= (parse_url($returnUrl, PHP_URL_QUERY)) ? '&' : '?';
+            $returnUrl .= 'incrementId=' . $orderId;
+        }
         $order = $this->getOrderByIncrementId($orderId);
         $redirectUrl = $this->startTransactionUrl($order, $returnUrl);
         return $redirectUrl;

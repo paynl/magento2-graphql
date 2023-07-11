@@ -77,6 +77,7 @@ type Order {
 
 input PlaceOrderInput {
     pay_return_url: String @doc(description: "URL to send the customer to once the payment has finished.")
+    pay_send_increment_id: Boolean @doc(description: "Send the increment_id with the pay_return_url")
 }
 
 input PaymentMethodInput {
