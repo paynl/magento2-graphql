@@ -2,7 +2,7 @@
     "name": "paynl/magento2-graphql",
     "description": "GraphQL module for 'Pay. Payment Methods for Magento2'",
     "type": "magento2-module",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "license": "MIT",
     "require": {
         "paynl/magento2-plugin": ">=3.5.2"
