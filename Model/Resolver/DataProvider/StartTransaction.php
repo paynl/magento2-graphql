@@ -53,10 +53,11 @@ class StartTransaction
     /**
      * @param order $order
      * @param string $returnUrl
+     * @param boolean $sendIncrementId
      * @return array
      * @throws GraphQlInputException
      */
-    private function startTransactionUrl($order, $returnUrl)
+    private function startTransactionUrl($order, $returnUrl, $sendIncrementId)
     {
         $redirectUrl = '';
         # Check if order has already been (partially) Paid.
@@ -70,6 +71,10 @@ class StartTransaction
 
         $payment = $order->getPayment();
         if (!empty($returnUrl)) {
+            if ($sendIncrementId === true) {
+                $returnUrl .= (parse_url($returnUrl, PHP_URL_QUERY)) ? '&' : '?';
+                $returnUrl .= 'incrementId=' . $order->getIncrementId();
+            }
             $payment->setAdditionalInformation('returnUrl', $returnUrl);
         }
 
@@ -81,18 +86,19 @@ class StartTransaction
             $redirectUrl = $methodInstance->startTransaction($order);
         }
         return $redirectUrl;
-    }    
+    }
 
     /**
      * @param string $orderId
      * @param string $returnUrl
+     * @param boolean $sendIncrementId
      * @return array
      * @throws GraphQlInputException
      */
-    public function placeOrder($orderId, $returnUrl)
+    public function placeOrder($orderId, $returnUrl, $sendIncrementId = false)
     {
         $order = $this->getOrderByIncrementId($orderId);
-        $redirectUrl = $this->startTransactionUrl($order, $returnUrl);
+        $redirectUrl = $this->startTransactionUrl($order, $returnUrl, $sendIncrementId);
         return $redirectUrl;
     }
 
