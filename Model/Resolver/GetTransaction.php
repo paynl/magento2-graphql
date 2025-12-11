@@ -30,7 +30,7 @@ class GetTransaction implements ResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         CheckToken::validate($context);
         return $this->transactionDataProvider->getTransactionData($args['pay_order_id']);
