@@ -35,15 +35,28 @@ class GetTransaction
     public function getTransactionData($payOrderId)
     {
         $transaction = $this->getTransaction($payOrderId);
-        $paymentDetails = $transaction->getData()['paymentDetails'];
-        $data = array_intersect_key($paymentDetails, array_flip($this->whitelist));
+        // $paymentDetails = $transaction->getData()['paymentDetails'];
+        $data = [
+            'orderId' => $transaction->getOrderId(),
+            'state'   => $transaction->getStatusCode(),
+            'stateName' => $transaction->getStatusName(),
+            'currency' => $transaction->getCurrency(),
+            'amount' => $transaction->getAmount(),
+            'currenyAmount' => $transaction->getAmount(),
+            'paidAmount' => $transaction->getCapturedAmount()?->getValue() / 100,
+            'paidCurrenyAmount' => $transaction->getCapturedAmount()?->getValue() / 100,
+            'refundAmount' => $transaction->getAmountRefunded(),
+            'refundCurrenyAmount' => $transaction->getAmountRefunded(),
+            'created' => $transaction->getCreatedAt(),
+            'orderNumber' => $transaction->getReference(),
+        ];
 
-        $data['amount'] = array('value' => $paymentDetails['amount'], 'currency' => $paymentDetails['currency']);
-        $data['amountOriginal'] = array('value' => $paymentDetails['currenyAmount'], 'currency' => $paymentDetails['currency']);
-        $data['amountPaid'] = array('value' => $paymentDetails['paidAmount'], 'currency' => $paymentDetails['currency']);
-        $data['amountPaidOriginal'] = array('value' => $paymentDetails['paidCurrenyAmount'], 'currency' => $paymentDetails['currency']);
-        $data['amountRefund'] = array('value' => $paymentDetails['refundAmount'], 'currency' => $paymentDetails['currency']);
-        $data['amountRefundOriginal'] = array('value' => $paymentDetails['refundCurrenyAmount'], 'currency' => $paymentDetails['currency']);
+        $data['amount'] = array('value' => $data['amount'], 'currency' => $data['currency']);
+        $data['amountOriginal'] = array('value' => $data['currenyAmount'], 'currency' => $data['currency']);
+        $data['amountPaid'] = array('value' => $data['paidAmount'], 'currency' => $data['currency']);
+        $data['amountPaidOriginal'] = array('value' => $data['paidCurrenyAmount'], 'currency' => $data['currency']);
+        $data['amountRefund'] = array('value' => $data['refundAmount'], 'currency' => $data['currency']);
+        $data['amountRefundOriginal'] = array('value' => $data['refundCurrenyAmount'], 'currency' => $data['currency']);
 
         $data['isSuccess'] = ($transaction->isPaid() || $transaction->isAuthorized() || $transaction->isPending());
 
@@ -52,11 +65,11 @@ class GetTransaction
 
     /**
      * @param string $payOrderId
-     * @return \Paynl\Transaction::status
+     * @return \PayNL\Sdk\Model\Pay\PayOrder
      */
     public function getTransaction($payOrderId)
     {
-        \Paynl\Config::setApiToken($this->config->getApiToken());
-        return \Paynl\Transaction::status($payOrderId);
+        $transactionStatusRequest = new \PayNL\Sdk\Model\Request\TransactionStatusRequest($payOrderId);
+        return $transactionStatusRequest->setConfig($this->config->getPayConfig())->start();
     }
 }
