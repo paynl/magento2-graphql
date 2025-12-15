@@ -12,13 +12,6 @@ class GetTransaction
      * @var Config
      */
     private $config;
-    /**
-     * @var array
-     */
-    public $whitelist = [
-        'orderId', 'state', 'stateName', 'currency', 'amount', 'currenyAmount', 'paidAmount',
-        'paidCurrenyAmount', 'refundAmount', 'refundCurrenyAmount', 'created', 'orderNumber'
-    ];
 
     /**
      * @param Config $config
@@ -35,7 +28,6 @@ class GetTransaction
     public function getTransactionData($payOrderId)
     {
         $transaction = $this->getTransaction($payOrderId);
-        // $paymentDetails = $transaction->getData()['paymentDetails'];
         $data = [
             'orderId' => $transaction->getOrderId(),
             'state'   => $transaction->getStatusCode(),
