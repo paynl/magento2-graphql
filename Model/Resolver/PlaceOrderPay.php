@@ -42,8 +42,8 @@ class PlaceOrderPay implements ResolverInterface
         $field,
         $context,
         $info,
-        array $value = null,
-        array $args = null
+        ?array $value = null,
+        ?array $args = null
     ) {
         if (isset($args['input']['pay_return_url'])) {
             $this->returnUrl = $args['input']['pay_return_url'];
@@ -56,7 +56,7 @@ class PlaceOrderPay implements ResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         return $this->startTransactionDataProvider->placeOrder($value['order_number'], $this->returnUrl, $this->sendIncrementId);
     }
