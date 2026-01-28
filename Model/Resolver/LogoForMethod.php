@@ -26,7 +26,7 @@ class LogoForMethod implements ResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         $cart = $value['model'] ?? null;
         $method = $value['code'] ?? null;
