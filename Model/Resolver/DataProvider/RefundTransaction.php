@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Paynl\Graphql\Model\Resolver\DataProvider;
 
 use Paynl\Payment\Model\Config;
+use PayNL\Sdk\Model\Request\TransactionRefundRequest;
+
 use \Exception;
 
 class RefundTransaction
@@ -15,12 +17,24 @@ class RefundTransaction
     private $config;
 
     /**
+     * @var SdkConfig
+     */
+    private $sdkConfig;
+
+    /**
+     * @var TransactionRefundRequest
+     */
+    private $transactionRefundRequest;
+
+    /**
      * @param Config $config
      */
     public function __construct(
-        Config $config
+        Config $config,
+        TransactionRefundRequest $transactionRefundRequest
     ) {
-        $this->config = $config;
+        $this->config = $config;   
+        $this->transactionRefundRequest = $transactionRefundRequest;
     }
 
     /**
@@ -29,18 +43,15 @@ class RefundTransaction
      */
     public function RefundTransaction($options)
     {
-        $result = 0;
-        try {
-            $this->config->configureSDK();
-            $refund = \Paynl\Transaction::refund($options['pay_order_id'], ($options['amount'] ?? null))->getData();
-            if (isset($refund['request']['result']) && $refund['request']['result']) {
-                $message = $refund['description'] ?? '';
-                $result = $refund['request']['result'];
-            } elseif (isset($refund['request']['errorId']) && $refund['request']['errorId']) {
-                throw new Exception($refund['request']['errorMessage'] ?? '');
-            } else {
-                $message = 'PAY. could not process this refund.';
-            }
+        $result = false;
+        try {       
+            $transactionRefundRequest = new TransactionRefundRequest($options['pay_order_id']);
+            $transactionRefundRequest
+                ->setConfig($this->config->getPayConfig())
+                ->setAmount($options['amount'])
+                ->start();
+            $message = 'PAY. has successfully refunded the transaction.';
+            $result = true;
         } catch (\Exception $e) {
             $message = strtolower($e->getMessage());
             if (substr($message, 0, 19) == '403 - access denied') {
