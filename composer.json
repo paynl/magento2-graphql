@@ -5,7 +5,7 @@
     "version": "3.0.0",
     "license": "MIT",
     "require": {
-        "paynl/magento2-plugin": ">=4.0.4"
+        "paynl/magento2-plugin": ">=4.0.6"
     },
     "autoload": {
         "files": [
