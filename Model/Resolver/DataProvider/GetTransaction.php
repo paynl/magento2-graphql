@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Paynl\Graphql\Model\Resolver\DataProvider;
 
 use Paynl\Payment\Model\Config;
+use PayNL\Sdk\Model\Request\OrderStatusRequest;
 
 class GetTransaction
 {
@@ -14,11 +15,17 @@ class GetTransaction
     private $config;
 
     /**
+     * @var OrderStatusRequest
+     */
+    private $orderStatusRequest;
+
+    /**
      * @param Config $config
      */
-    public function __construct(Config $config)
+    public function __construct(Config $config, OrderStatusRequest $orderStatusRequest)
     {
         $this->config = $config;
+        $this->orderStatusRequest = $orderStatusRequest;
     }
 
     /**
@@ -27,41 +34,27 @@ class GetTransaction
      */
     public function getTransactionData($payOrderId)
     {
-        $transaction = $this->getTransaction($payOrderId);
-        $data = [
-            'orderId' => $transaction->getOrderId(),
-            'state'   => $transaction->getStatusCode(),
-            'stateName' => $transaction->getStatusName(),
-            'currency' => $transaction->getCurrency(),
-            'amount' => $transaction->getAmount(),
-            'currenyAmount' => $transaction->getAmount(),
-            'paidAmount' => $transaction->getCapturedAmount()?->getValue() / 100,
-            'paidCurrenyAmount' => $transaction->getCapturedAmount()?->getValue() / 100,
-            'refundAmount' => $transaction->getAmountRefunded(),
-            'refundCurrenyAmount' => $transaction->getAmountRefunded(),
-            'created' => $transaction->getCreatedAt(),
-            'orderNumber' => $transaction->getReference(),
-        ];
+        $payOrder = $this->getTransaction($payOrderId);
 
-        $data['amount'] = array('value' => $data['amount'], 'currency' => $data['currency']);
-        $data['amountOriginal'] = array('value' => $data['currenyAmount'], 'currency' => $data['currency']);
-        $data['amountPaid'] = array('value' => $data['paidAmount'], 'currency' => $data['currency']);
-        $data['amountPaidOriginal'] = array('value' => $data['paidCurrenyAmount'], 'currency' => $data['currency']);
-        $data['amountRefund'] = array('value' => $data['refundAmount'], 'currency' => $data['currency']);
-        $data['amountRefundOriginal'] = array('value' => $data['refundCurrenyAmount'], 'currency' => $data['currency']);
-
-        $data['isSuccess'] = ($transaction->isPaid() || $transaction->isAuthorized() || $transaction->isPending());
+        $data['orderId'] = $payOrderId;
+        $data['state'] = $payOrder->getStatusCode();
+        $data['stateName'] = $payOrder->getStatusName();
+        $data['amount'] = array('value' => $payOrder->getAmount(), 'currency' => $payOrder->getCurrency());
+        $data['amountRefund'] = array('value' => $payOrder->getAmountRefunded(), 'currency' => $payOrder->getCurrency());
+        $data['created'] = $payOrder->getCreatedAt();
+        $data['orderNumber'] = $payOrder->getExtra1();
+        $data['isSuccess'] = ($payOrder->isPaid() || $payOrder->isAuthorized() || $payOrder->isPending());
 
         return $data;
     }
 
     /**
      * @param string $payOrderId
-     * @return \PayNL\Sdk\Model\Pay\PayOrder
+     * @return \OrderStatusRequest
      */
     public function getTransaction($payOrderId)
     {
-        $transactionStatusRequest = new \PayNL\Sdk\Model\Request\TransactionStatusRequest($payOrderId);
-        return $transactionStatusRequest->setConfig($this->config->getPayConfig())->start();
+        $payOrder = (new OrderStatusRequest($payOrderId))->setConfig($this->config->getPayConfig())->start();
+        return $payOrder;
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Paynl\Graphql\Model\Resolver\DataProvider;
 
 use Paynl\Payment\Model\Config;
+use PayNL\Sdk\Model\Request\OrderVoidRequest;
 use \Exception;
 
 class VoidTransaction
@@ -15,12 +16,19 @@ class VoidTransaction
     private $config;
 
     /**
+     * @var OrderVoidRequest
+     */
+    private $orderVoidRequest;
+
+    /**
      * @param Config $config
      */
     public function __construct(
-        Config $config
+        Config $config,
+        OrderVoidRequest $orderVoidRequest
     ) {
         $this->config = $config;
+        $this->orderVoidRequest = $orderVoidRequest;
     }
 
     /**
@@ -31,14 +39,12 @@ class VoidTransaction
     {
         $result = false;
         try {
-            $this->config->configureSDK();
-            $void = \Paynl\Transaction::void($options['pay_order_id']);
-            if ($void === true) {
-                $message = 'PAY. has successfully voided the transaction.';
-                $result = $void;
-            } else {
-                $message = 'PAY. could not process this void.';
-            }
+            $orderVoidRequest = new OrderVoidRequest($options['pay_order_id']);
+            $orderVoidRequest->setConfig($this->config->getPayConfig());
+            $orderVoidRequest->start();
+            
+            $message = 'PAY. has successfully voided the transaction.';
+            $result = true;            
         } catch (\Exception $e) {
             $message = strtolower($e->getMessage());
             if (substr($message, 0, 19) == '403 - access denied') {

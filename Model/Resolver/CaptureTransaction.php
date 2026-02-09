@@ -25,6 +25,7 @@ class CaptureTransaction implements ResolverInterface
 
     /**
      * @param DataProvider\CaptureTransaction $captureTransactionDataProvider
+     * @param AuthorizationInterface $authorization
      */
     public function __construct(DataProvider\CaptureTransaction $captureTransactionDataProvider, AuthorizationInterface $authorization)
     {
