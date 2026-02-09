@@ -5,7 +5,8 @@
     "version": "2.1.0",
     "license": "MIT",
     "require": {
-        "paynl/magento2-plugin": ">=3.5.2"
+        "paynl/magento2-plugin": ">=4.0.0",
+        "paynl/php-sdk": ">=1.0.7"
     },
     "autoload": {
         "files": [
