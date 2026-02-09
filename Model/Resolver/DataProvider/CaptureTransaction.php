@@ -37,16 +37,6 @@ class CaptureTransaction
     private $payPayment;
 
     /**
-     * @var OrderStatusRequest
-     */
-    private $orderStatusRequest;
-
-    /**
-     * @var OrderCaptureRequest
-     */
-    private $orderCaptureRequest;
-
-    /**
      * @param Config $config
      * @param OrderResourceInterface $orderResource
      * @param OrderInterfaceFactory $orderFactory
@@ -56,17 +46,13 @@ class CaptureTransaction
         Config $config,
         OrderResourceInterface $orderResource,
         OrderInterfaceFactory $orderFactory,
-        PayPayment $payPayment,
-        OrderStatusRequest $orderStatusRequest,
-        OrderCaptureRequest $orderCaptureRequest
+        PayPayment $payPayment
 
     ) {
         $this->config = $config;
         $this->orderResource = $orderResource;
         $this->orderFactory = $orderFactory;
         $this->payPayment = $payPayment;
-        $this->orderStatusRequest = $orderStatusRequest;
-        $this->orderCaptureRequest = $orderCaptureRequest;
     }
 
     /**
