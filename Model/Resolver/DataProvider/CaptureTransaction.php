@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Paynl\Graphql\Model\Resolver\DataProvider;
 
@@ -9,7 +9,9 @@ use Magento\Sales\Model\Spi\OrderResourceInterface;
 use Magento\Sales\Api\Data\OrderInterfaceFactory;
 use Paynl\Payment\Model\Config;
 use Paynl\Payment\Model\PayPayment;
-use Paynl\Result\Transaction\Transaction;
+use PayNL\Sdk\Model\Request\OrderCaptureRequest;
+use PayNL\Sdk\Model\Request\OrderStatusRequest;
+
 use \Exception;
 
 class CaptureTransaction
@@ -35,6 +37,16 @@ class CaptureTransaction
     private $payPayment;
 
     /**
+     * @var OrderStatusRequest
+     */
+    private $orderStatusRequest;
+
+    /**
+     * @var OrderCaptureRequest
+     */
+    private $orderCaptureRequest;
+
+    /**
      * @param Config $config
      * @param OrderResourceInterface $orderResource
      * @param OrderInterfaceFactory $orderFactory
@@ -44,12 +56,17 @@ class CaptureTransaction
         Config $config,
         OrderResourceInterface $orderResource,
         OrderInterfaceFactory $orderFactory,
-        PayPayment $payPayment
+        PayPayment $payPayment,
+        OrderStatusRequest $orderStatusRequest,
+        OrderCaptureRequest $orderCaptureRequest
+
     ) {
         $this->config = $config;
         $this->orderResource = $orderResource;
         $this->orderFactory = $orderFactory;
         $this->payPayment = $payPayment;
+        $this->orderStatusRequest = $orderStatusRequest;
+        $this->orderCaptureRequest = $orderCaptureRequest;
     }
 
     /**
@@ -58,27 +75,24 @@ class CaptureTransaction
      */
     public function CaptureTransaction($options)
     {
-
         $result = false;
-        $bCaptureResult = false;
         try {
-            $this->config->configureSDK();
-            $bCaptureResult = \Paynl\Transaction::capture($options['pay_order_id'], null);
-            if ($bCaptureResult === true) {
-                $message = 'PAY. has successfully captured the transaction.';
-                $result = $bCaptureResult;
-            } else {
-                $message = 'PAY. could not process this capture.';
-            }
+            $payConfig = $this->config->getPayConfig();
+            $orderCaptureRequest = new OrderCaptureRequest($options['pay_order_id']);
+            $orderCaptureRequest->setConfig($payConfig);
+            $orderCaptureRequest->start();
+
+            $message = 'PAY. has successfully captured the transaction.';
+            $result = true;
 
             if ($this->config->autoCaptureEnabled()) {
                 $order = $this->orderFactory->create();
                 $this->orderResource->load($order, $options['order_number'], OrderInterface::INCREMENT_ID);
-                $order->addStatusHistoryComment(__('PAY. - Performed graphQL-capture. Result: ') . ($bCaptureResult ? 'Success' : 'Failed'))->save();
+                $order->addStatusHistoryComment(__('PAY. - Performed graphQL-capture. Result: ') . ($result ? 'Success' : 'Failed'))->save();
                 # Whether capture failed or succeeded, we still might have to process paid order
-                $transaction = \Paynl\Transaction::get($options['pay_order_id']);
-                if ($transaction->isPaid()) {
-                    $this->payPayment->processPaidOrder($transaction, $order);
+                $payOrder = (new OrderStatusRequest($options['pay_order_id']))->setConfig($payConfig)->start();
+                if ($payOrder->isPaid()) {
+                    $this->payPayment->processPaidOrder($payOrder, $order);
                 }
             }
         } catch (\Exception $e) {
