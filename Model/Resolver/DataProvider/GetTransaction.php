@@ -15,17 +15,12 @@ class GetTransaction
     private $config;
 
     /**
-     * @var OrderStatusRequest
-     */
-    private $orderStatusRequest;
-
-    /**
      * @param Config $config
      */
-    public function __construct(Config $config, OrderStatusRequest $orderStatusRequest)
-    {
+    public function __construct(
+        Config $config
+    ) {
         $this->config = $config;
-        $this->orderStatusRequest = $orderStatusRequest;
     }
 
     /**

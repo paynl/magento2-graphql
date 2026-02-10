@@ -17,24 +17,12 @@ class RefundTransaction
     private $config;
 
     /**
-     * @var SdkConfig
-     */
-    private $sdkConfig;
-
-    /**
-     * @var TransactionRefundRequest
-     */
-    private $transactionRefundRequest;
-
-    /**
      * @param Config $config
      */
     public function __construct(
-        Config $config,
-        TransactionRefundRequest $transactionRefundRequest
+        Config $config
     ) {
-        $this->config = $config;   
-        $this->transactionRefundRequest = $transactionRefundRequest;
+        $this->config = $config;
     }
 
     /**
@@ -44,12 +32,13 @@ class RefundTransaction
     public function RefundTransaction($options)
     {
         $result = false;
-        try {       
+        try {
             $transactionRefundRequest = new TransactionRefundRequest($options['pay_order_id']);
-            $transactionRefundRequest
-                ->setConfig($this->config->getPayConfig())
-                ->setAmount($options['amount'])
-                ->start();
+            $transactionRefundRequest->setConfig($this->config->getPayConfig());
+            if (!empty($options['amount'])) {
+                $transactionRefundRequest->setAmount($options['amount']);
+            }
+            $transactionRefundRequest->start();
             $message = 'PAY. has successfully refunded the transaction.';
             $result = true;
         } catch (\Exception $e) {

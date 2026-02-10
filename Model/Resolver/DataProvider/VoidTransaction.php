@@ -15,20 +15,10 @@ class VoidTransaction
      */
     private $config;
 
-    /**
-     * @var OrderVoidRequest
-     */
-    private $orderVoidRequest;
-
-    /**
-     * @param Config $config
-     */
     public function __construct(
-        Config $config,
-        OrderVoidRequest $orderVoidRequest
+        Config $config
     ) {
         $this->config = $config;
-        $this->orderVoidRequest = $orderVoidRequest;
     }
 
     /**
@@ -42,9 +32,9 @@ class VoidTransaction
             $orderVoidRequest = new OrderVoidRequest($options['pay_order_id']);
             $orderVoidRequest->setConfig($this->config->getPayConfig());
             $orderVoidRequest->start();
-            
+
             $message = 'PAY. has successfully voided the transaction.';
-            $result = true;            
+            $result = true;
         } catch (\Exception $e) {
             $message = strtolower($e->getMessage());
             if (substr($message, 0, 19) == '403 - access denied') {
