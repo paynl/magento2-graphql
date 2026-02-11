@@ -1,11 +1,11 @@
 <p align="center">
     <img src="https://www.pay.nl/uploads/1/brands/main_logo.png" />
 </p>
-<h1 align="center">PAY. GraphQL Extension for Magento</h1>
+<h1 align="center">Pay. GraphQL Extension for Magento</h1>
 
 # Description
 
-This module adds GraphQL functionality for the [PAY. Magento2 plugin](https://github.com/paynl/magento2-plugin)
+This module adds GraphQL functionality for the [Pay. Magento2 plugin](https://github.com/paynl/magento2-plugin)
 
 - [Description](#description)
 - [Requirements](#requirements)
@@ -15,8 +15,8 @@ This module adds GraphQL functionality for the [PAY. Magento2 plugin](https://gi
 
 # Requirements
 
-    PHP 7.2 or higher
-    PAY. Magento2 plugin 3.5.2 or higher
+    PHP 8.1 or higher
+    Pay. Magento2 plugin 4.0.6 or higher
     Tested up to Magento 2.4.6
 
 # Installation
