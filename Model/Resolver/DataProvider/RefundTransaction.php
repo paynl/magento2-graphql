@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Paynl\Graphql\Model\Resolver\DataProvider;
 
 use Paynl\Payment\Model\Config;
+use PayNL\Sdk\Model\Request\TransactionRefundRequest;
+
 use \Exception;
 
 class RefundTransaction
@@ -29,18 +31,16 @@ class RefundTransaction
      */
     public function RefundTransaction($options)
     {
-        $result = 0;
+        $result = false;
         try {
-            $this->config->configureSDK();
-            $refund = \Paynl\Transaction::refund($options['pay_order_id'], ($options['amount'] ?? null))->getData();
-            if (isset($refund['request']['result']) && $refund['request']['result']) {
-                $message = $refund['description'] ?? '';
-                $result = $refund['request']['result'];
-            } elseif (isset($refund['request']['errorId']) && $refund['request']['errorId']) {
-                throw new Exception($refund['request']['errorMessage'] ?? '');
-            } else {
-                $message = 'PAY. could not process this refund.';
+            $transactionRefundRequest = new TransactionRefundRequest($options['pay_order_id']);
+            $transactionRefundRequest->setConfig($this->config->getPayConfig());
+            if (!empty($options['amount'])) {
+                $transactionRefundRequest->setAmount($options['amount']);
             }
+            $transactionRefundRequest->start();
+            $message = 'PAY. has successfully refunded the transaction.';
+            $result = true;
         } catch (\Exception $e) {
             $message = strtolower($e->getMessage());
             if (substr($message, 0, 19) == '403 - access denied') {
